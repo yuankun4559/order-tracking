@@ -139,7 +139,7 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   },
   {
     status: '42',
-    name: '等待预售到货',
+    name: '待下发仓库',
     color: 'rgba(255,24,24,1)',
     bgColor: 'rgba(255,24,24,.1)',
   },
