@@ -1,39 +1,37 @@
-# README
+# order-tracking-agreement（锐锢订单履约查询系统）
 
-## 环境说明
+## 命令配置
 
-### 一，dev(开发环境)
+### 本地开发环境 - 安装
 
-`````bash
-    1，打包命令：
-        npm install 或 yarn
-        npm run build:dev
-    2，访问地址  dev.order-tracking-agreement.ruigushop.com
+```
+yarn 或 npm i
 ```
 
-### 二，test(测试环境)
+### 本地开发环境 - 开发
 
-````bash
-     1，打包命令：
-        npm install 或 yarn
-        npm run  build:test
-     2，访问地址  test.order-tracking-agreement.ruigushop.com
+```
+yarn start:dev 或 npm run start:dev
+
 ```
 
-### 二，uat(uat 环境)
+### 打包 - [开发环境](http://dev.order-tracking-agreement.ruigushop.com/)
 
-````bash
-     1，打包命令：
-        npm install 或 yarn
-        npm run  build:uat
-     2，访问地址  uat.order-tracking-agreement.ruigushop.com
+```
+cnpm i
+npm run build:dev
 ```
 
-### 三，master(正式环境)
+### 打包 - [测试环境](http://test.order-tracking-agreement.ruigushop.com/)
 
-````bash
-     1，打包命令：
-        npm install 或 yarn
-        npm run  build:prod
-    2，访问地址 https://order-tracking-agreement.ruigushop.com
-`````
+```
+cnpm i
+npm run build:test
+```
+
+### 打包 - [线上环境](https://order-tracking-agreement.ruigushop.com/)
+
+```
+cnpm i
+npm run build:prod
+```

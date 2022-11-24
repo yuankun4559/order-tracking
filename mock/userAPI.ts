@@ -35,7 +35,7 @@ export default {
   'GET /api/v1/queryUserList': (req: any, res: any) => {
     res.json({
       success: true,
-      data: { list: users },
+      data: { content: [...users], totalElements: 3 },
       errorCode: 0,
     });
   },

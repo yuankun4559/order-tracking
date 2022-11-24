@@ -6,6 +6,7 @@ const env = process.env.UMI_ENV as string;
 const REACT_BASE_URL = {
   dev: 'http://dev.nagy.ruigushop.com',
   test: 'http://test.nagy.ruigushop.com',
+  // test: 'http://172.16.24.101:9202',
   uat: 'http://uat.nagy.ruigushop.com',
   prod: '//rbox.ruigushop.com',
 }[env];
@@ -23,6 +24,11 @@ export default defineConfig({
     defaultCollapsed: true,
   },
   npmClient: 'yarn',
+  locale: {
+    default: 'zh-CN',
+    antd: true,
+    baseNavigator: true,
+  },
   define: {
     REACT_BASE_URL,
   },

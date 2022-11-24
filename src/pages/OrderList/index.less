@@ -17,9 +17,24 @@
               .ant-pro-card-body {
                 background-color: white;
 
-                .ant-table-expanded-row {
+                .ant-table-thead {
+                  & tr th {
+                    font-weight: bolder;
+
+                    &::before {
+                      opacity: 0;
+                    }
+                  }
+                }
+
+                .ant-table-tbody .ant-table-expanded-row {
+                  .ant-pro-card {
+                    padding: 0;
+                  }
+
                   .ant-pro-card-body {
                     background-color: #fafafa;
+                    padding: 0;
 
                     & tr td {
                       background-color: #fafafa;
@@ -34,12 +49,21 @@
     }
   }
 
+  .ant-table.ant-table-middle
+    .ant-table-tbody
+    .ant-table-wrapper:only-child
+    .ant-table {
+    margin-block: 0;
+  }
+
   .table-collose-all {
-    position: absolute;
-    top: 71px;
-    z-index: 9999;
-    left: 56px;
     cursor: pointer;
+  }
+
+  .ant-pro-table-list-toolbar {
+    .ant-pro-table-list-toolbar-right {
+      opacity: 0;
+    }
   }
 
   .my-tag {
@@ -51,5 +75,10 @@
     line-height: 22px;
     font-size: 14px;
     text-align: center;
+  }
+
+  .info-desc {
+    color: #000;
+    cursor: default;
   }
 }

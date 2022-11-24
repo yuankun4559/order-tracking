@@ -2,21 +2,25 @@ import servicesOrder from '@/services/order';
 import {
   ActionType,
   PageContainer,
-  ProDescriptionsItemProps,
+  ProColumns,
   ProTable,
 } from '@ant-design/pro-components';
-import { Badge, Tooltip } from 'antd';
-import { MinusSquareOutlined, PlusSquareOutlined } from '@ant-design/icons';
+import { Badge, message, Tooltip, Button, Empty } from 'antd';
+import { DoubleRightOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
 
-import { ORDER_HUANG_STATUS } from '@/utils/data';
+import { formatDecimal } from '@/utils/format';
+import { ORDER_HUANG_STATUS, ORDER_SKU_HUANG_STATUS } from '@/utils/data';
 
-const { queryOrderList } = servicesOrder.OrderController;
+const { queryOrderList, queryOrderDetailList } = servicesOrder.OrderController;
 
 import './index.less';
 
 const OrderList: React.FC<unknown> = () => {
+  const regX: RegExp =
+    /^((?![a-z]{2,},)(?![0-9]{2,},)[a-z0-9]{2,},)*(?![a-z]{2,}$)(?![0-9]{2,}$)[a-z0-9]{2,}$/i;
   const actionRef = useRef<ActionType>();
+  const [isReset, setIsReset] = useState(false);
   const [isColloseAll, setIsColloseAll] = useState<boolean>(false);
   const [tableData, setTableData] = useState<API.UserInfo[]>([]);
   const [innerData, setInnerData] = useState<API.IInnerTableRow>();
@@ -24,14 +28,23 @@ const OrderList: React.FC<unknown> = () => {
     [],
   );
 
-  const columns: ProDescriptionsItemProps<API.UserInfo>[] = [
+  const columns: ProColumns<API.UserInfo>[] = [
     {
       title: '子订单号',
       dataIndex: 'subOrderNumber',
       fieldProps: {
         placeholder: '请输入,多单查询以“,”分隔',
       },
+      formItemProps: {
+        rules: [
+          {
+            pattern: regX,
+            message: '多单查询以“,”分隔',
+          },
+        ],
+      },
       valueType: 'text',
+      width: 120,
     },
     {
       title: '主订单号',
@@ -39,7 +52,16 @@ const OrderList: React.FC<unknown> = () => {
       fieldProps: {
         placeholder: '请输入,多单查询以“,”分隔',
       },
+      formItemProps: {
+        rules: [
+          {
+            pattern: regX,
+            message: '多单查询以“,”分隔',
+          },
+        ],
+      },
       valueType: 'text',
+      width: 120,
     },
     {
       title: '订单类型',
@@ -48,7 +70,7 @@ const OrderList: React.FC<unknown> = () => {
       valueType: 'select',
       valueEnum: {
         1: 'R1',
-        4: 'R4',
+        3: 'R4',
         5: 'R5',
       },
     },
@@ -66,6 +88,14 @@ const OrderList: React.FC<unknown> = () => {
       dataIndex: 'rangeDate',
       valueType: 'dateRange',
       hideInTable: true,
+      search: {
+        transform: (value) => {
+          return {
+            startTime: `${value[0]} 00:00:00`,
+            endTime: `${value[1]} 23:59:59`,
+          };
+        },
+      },
     },
     {
       title: '用户名',
@@ -102,12 +132,16 @@ const OrderList: React.FC<unknown> = () => {
       dataIndex: 'orderSaleAmount',
       hideInSearch: true,
       valueType: 'text',
+      renderText: (text) => formatDecimal(text || 0, 2),
     },
     {
       title: '履约仓/店铺',
-      dataIndex: 'orderSaleAmount',
+      dataIndex: 'warehouseName',
       valueType: 'text',
       hideInSearch: true,
+      render: (_, record) => {
+        return record?.warehouseName || record?.shopName;
+      },
     },
     {
       title: '下单日期',
@@ -124,11 +158,17 @@ const OrderList: React.FC<unknown> = () => {
     {
       title: '当前状态',
       dataIndex: 'hangUpStatus',
+      hideInSearch: true,
+      colSize: 2,
+      width: 160,
+      // fixed: 'right',
       render: (text) => {
         const currentStatus = ORDER_HUANG_STATUS?.find(
           (item) => item.status === String(text),
         );
-        return (
+        const result = !text ? (
+          ''
+        ) : (
           <div
             className="my-tag"
             style={{
@@ -144,39 +184,42 @@ const OrderList: React.FC<unknown> = () => {
             />
           </div>
         );
+        return result;
       },
     },
   ];
 
-  const innderColumns: ProDescriptionsItemProps<API.InnerOrderDetail>[] = [
-    { title: '商品编码', dataIndex: 'skuCode', valueType: 'text' },
-    { title: '商品名', dataIndex: 'skuName', valueType: 'text' },
+  const innderColumns: ProColumns<API.InnerOrderDetail>[] = [
+    { title: '商品编码', dataIndex: 'skuCode', valueType: 'text', width: 210 },
+    { title: '商品名', dataIndex: 'skuName', valueType: 'text', width: '20%' },
     { title: '品牌', dataIndex: 'brandName', valueType: 'text' },
     { title: '数量', dataIndex: 'quantity', valueType: 'text' },
-    { title: '合计金额', dataIndex: 'orderSaleAmount', valueType: 'text' },
-    { title: '子状态耗时(h)', dataIndex: 'name', valueType: 'text' },
+    {
+      title: '合计金额',
+      dataIndex: 'totalAmount',
+      valueType: 'text',
+      renderText: (text) => formatDecimal(text || 0, 2),
+    },
+    {
+      title: '子状态耗时(h)',
+      dataIndex: 'hangUpTimeConsuming',
+      valueType: 'text',
+    },
     {
       title: '当前子状态',
       dataIndex: 'hangUpStatus',
+      width: 160,
       render: (text) => {
-        const currentStatus = ORDER_HUANG_STATUS?.find(
+        console.log(text, '子状态');
+        const currentStatus = ORDER_SKU_HUANG_STATUS?.find(
           (item) => item.status === String(text),
         );
         return (
-          <div
-            className="my-tag"
-            style={{
-              color: currentStatus?.color,
-              borderColor: currentStatus?.bgColor,
-              backgroundColor: currentStatus?.bgColor,
-            }}
-          >
-            <Badge
-              color={currentStatus?.color}
-              text={currentStatus?.name}
-              style={{ color: currentStatus?.color }}
-            />
-          </div>
+          <Badge
+            color={currentStatus?.color}
+            text={currentStatus?.name}
+            style={{ color: currentStatus?.color }}
+          />
         );
       },
     },
@@ -184,26 +227,52 @@ const OrderList: React.FC<unknown> = () => {
 
   const expandedRowRender = (record: API.UserInfo) => {
     const data: API.InnerOrderDetail[] =
-      record?.id && innerData?.hasOwnProperty(record?.id)
-        ? innerData[record.id]
+      record?.subOrderNumber &&
+      innerData?.hasOwnProperty(record?.subOrderNumber)
+        ? innerData[record.subOrderNumber]
         : [];
     return (
       <ProTable
+        rowKey="subOrderNumber"
         columns={innderColumns}
         headerTitle={false}
         search={false}
         options={false}
         dataSource={data}
         pagination={false}
+        className="my-table-inner"
       />
     );
   };
 
+  const getOrderDetailList = async (keys: readonly React.Key[]) => {
+    try {
+      const result = await queryOrderDetailList({
+        subOrderNumberList: keys.join(','),
+      });
+      const currentInnerData = {
+        ...innerData,
+        ...result,
+      };
+      setInnerData(currentInnerData);
+    } catch (err: any) {
+      message.error(err?.message || err);
+    }
+  };
+
   const handleToggleCollose = () => {
     // @ts-ignore
-    const currentExpandRows: IExpandRow[] = !isColloseAll
-      ? tableData?.map((item) => item.id)
+    const currentExpandRows: readonly React.Key[] = !isColloseAll
+      ? tableData?.map((item) => item.subOrderNumber)
       : [];
+    if (!isColloseAll) {
+      // 展开全部
+      const rowsExpandNew: readonly React.Key[] = currentExpandRows.filter(
+        (item) => !expandedRowKeys.includes(item),
+      );
+      if (rowsExpandNew?.length === 0) return;
+      getOrderDetailList(rowsExpandNew);
+    }
     setIsColloseAll(!isColloseAll);
     setExpandedRowKeys(currentExpandRows);
   };
@@ -217,66 +286,97 @@ const OrderList: React.FC<unknown> = () => {
     setExpandedRowKeys(keys);
     setIsColloseAll(isAllExpand);
     // 批量查询子表格
-    console.log('批量查询子表格', rowsExpandNew);
-  };
-
-  const handleExpand = (expanded: boolean, record: API.UserInfo) => {
-    const isCollose = record?.id && innerData?.hasOwnProperty(record?.id);
-    let data = [];
-    let currentInnerData: API.IInnerTableRow = { ...innerData };
-    if (expanded && record?.id && !isCollose) {
-      // 展开 && 未被展开过 -> 查询接口
-      for (let i = 0; i < 3; i += 1) {
-        data.push({
-          key: i,
-          date: '2014-12-24 23:12:00',
-          name: 'This is production name',
-          upgradeNum: 'Upgraded: 56',
-        });
-      }
-      currentInnerData = {
-        ...currentInnerData,
-        [record.id]: data,
-      };
-    }
-    setInnerData(currentInnerData);
+    if (rowsExpandNew?.length === 0) return;
+    getOrderDetailList(rowsExpandNew);
   };
 
   return (
-    <PageContainer className="my-page-container">
+    <PageContainer
+      className="my-page-container"
+      extra={[
+        <Button type="link" className="info-desc" key="desc">
+          数据每小时准点更新
+        </Button>,
+      ]}
+    >
       <ProTable<API.UserInfo>
         headerTitle={
-          <div className="table-collose-all" onClick={handleToggleCollose}>
-            <Tooltip
-              placement="top"
-              title={isColloseAll ? '点击全部收起' : '点击全部展开'}
-            >
-              {isColloseAll ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
-            </Tooltip>
-          </div>
+          tableData?.length > 0 && (
+            <div className="table-collose-all" onClick={handleToggleCollose}>
+              <Tooltip
+                placement="top"
+                title={isColloseAll ? '点击全部收起' : '点击全部展开'}
+              >
+                <Button
+                  ghost
+                  type="primary"
+                  icon={
+                    <DoubleRightOutlined rotate={isColloseAll ? -90 : 90} />
+                  }
+                >
+                  {isColloseAll ? '收起全部' : '展开全部'}
+                </Button>
+              </Tooltip>
+            </div>
+          )
         }
+        locale={{
+          emptyText: <Empty description="输入查询条件后显示结果" />,
+        }}
+        scroll={{ y: 'calc(100vh - 430px)' }}
         actionRef={actionRef}
-        rowKey="id"
+        rowKey="subOrderNumber"
         tableClassName="my-table"
+        form={{
+          ignoreRules: false,
+        }}
+        manualRequest={true}
         search={{
           labelWidth: 100,
-          defaultCollapsed: false,
           className: 'my-search',
+          defaultCollapsed: false,
+          optionRender: (searchConfig, formProps, dom) => [...dom.reverse()],
         }}
-        request={async (params, sorter, filter) => {
-          console.log('params', params);
-          const { data, success } = await queryOrderList({
-            ...params,
-            // FIXME: remove @ts-ignore
+        request={async (params) => {
+          if (
+            !params?.mainOrderNumber &&
+            !params?.subOrderNumber &&
+            !params?.phone &&
+            !params?.startTime
+          ) {
+            if (isReset) {
+              setIsReset(false);
+            } else {
+              message.warning('请输入查询条件!');
+            }
+
+            return {
+              data: [],
+              total: 0,
+              success: true,
+            };
+          }
+          setIsReset(false);
+          const { content = [], totalElements = 0 } = await queryOrderList({
             // @ts-ignore
-            sorter,
-            filter,
+            page: params?.current - 1,
+            size: params?.pageSize,
+            mainOrderNumber: params?.mainOrderNumber,
+            subOrderNumber: params?.subOrderNumber,
+            phone: params.phone,
+            startTime: params?.startTime,
+            endTime: params?.endTime,
           });
-          setTableData(data?.list || []);
+          setTableData(content || []);
           return {
-            data: data?.list || [],
-            success,
+            data: content || [],
+            total: totalElements || 0,
+            success: true,
           };
+        }}
+        pagination={{
+          pageSize: 10,
+          onChange: (page) => console.log(page),
         }}
         columns={columns}
         expandable={{
@@ -285,7 +385,12 @@ const OrderList: React.FC<unknown> = () => {
           expandedRowKeys,
           // @ts-ignore
           onExpandedRowsChange: handleExpandChange,
-          onExpand: handleExpand,
+        }}
+        onReset={() => {
+          setIsReset(true);
+          setIsColloseAll(false);
+          setExpandedRowKeys([]);
+          setTableData([]);
         }}
       ></ProTable>
     </PageContainer>

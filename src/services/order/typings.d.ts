@@ -3,8 +3,6 @@
 
 declare namespace API {
   interface PageInfo {
-    /** 
-1 */
     current?: number;
     pageSize?: number;
     total?: number;
@@ -12,12 +10,11 @@ declare namespace API {
   }
 
   interface PageInfo_UserInfo_ {
-    /** 
-1 */
-    current?: number;
-    pageSize?: number;
-    total?: number;
-    list?: Array<UserInfo>;
+    page?: number;
+    size?: number;
+    totalPages?: number;
+    totalElements: number;
+    content?: Array<UserInfo>;
   }
 
   interface Result {
@@ -44,16 +41,24 @@ declare namespace API {
     data?: string;
   }
 
+  // @ts-ignore
   type UserGenderEnum = 'MALE' | 'FEMALE';
 
   interface UserInfo {
-    id?: string;
-    name?: string;
-    /** nick */
-    nickName?: string;
-    /** email */
-    email?: string;
-    gender?: UserGenderEnum;
+    subOrderNumber?: string;
+    mainOrderNumber?: string;
+    orderType: number;
+    province?: string;
+    city?: string;
+    area?: string;
+    shopName?: string;
+    storeName?: string;
+    userName?: string;
+    warehouseName?: string;
+    hangUpStatus?: number;
+    orderCreateDate?: string;
+    cumulativeFulfillmentTimeConsuming?: number;
+    orderSaleAmount?: number;
   }
 
   interface UserInfoVO {
@@ -64,5 +69,6 @@ declare namespace API {
     email?: string;
   }
 
+  // @ts-ignore
   type definitions_0 = null;
 }
