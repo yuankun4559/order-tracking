@@ -17,8 +17,7 @@ const { queryOrderList, queryOrderDetailList } = servicesOrder.OrderController;
 import './index.less';
 
 const OrderList: React.FC<unknown> = () => {
-  const regX: RegExp =
-    /^((?![a-z]{2,},)(?![0-9]{2,},)[a-z0-9]{2,},)*(?![a-z]{2,}$)(?![0-9]{2,}$)[a-z0-9]{2,}$/i;
+  const regX: RegExp = /^([a-z0-9]{1,},)*[a-z0-9]{1,}$/;
   const actionRef = useRef<ActionType>();
   const [isReset, setIsReset] = useState(false);
   const [isColloseAll, setIsColloseAll] = useState<boolean>(false);
