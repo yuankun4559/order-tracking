@@ -78,8 +78,13 @@ const OrderList: React.FC<unknown> = () => {
       title: '手机号',
       dataIndex: 'phone',
       hideInTable: true,
-      fieldProps: {
-        placeholder: '请输入',
+      formItemProps: {
+        rules: [
+          {
+            pattern: /^[1][3,4,5,7,8][0-9]{9}$/,
+            message: '手机号格式不正确',
+          },
+        ],
       },
       valueType: 'text',
     },
