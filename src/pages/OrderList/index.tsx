@@ -105,7 +105,7 @@ const OrderList: React.FC<unknown> = () => {
     },
     {
       title: '店铺名',
-      dataIndex: 'shopName',
+      dataIndex: 'storeName',
       hideInSearch: true,
       valueType: 'text',
     },
