@@ -327,7 +327,7 @@ const OrderList: React.FC<unknown> = () => {
         locale={{
           emptyText: <Empty description="输入查询条件后显示结果" />,
         }}
-        scroll={{ y: 'calc(100vh - 430px)' }}
+        scroll={{ y: 'calc(100vh - 445px)' }}
         actionRef={actionRef}
         rowKey="subOrderNumber"
         tableClassName="my-table"
@@ -342,6 +342,8 @@ const OrderList: React.FC<unknown> = () => {
           optionRender: (searchConfig, formProps, dom) => [...dom.reverse()],
         }}
         request={async (params) => {
+          console.log('====================================');
+          console.log(params);
           if (
             !params?.mainOrderNumber &&
             !params?.subOrderNumber &&
@@ -357,6 +359,7 @@ const OrderList: React.FC<unknown> = () => {
             return {
               data: [],
               total: 0,
+
               success: true,
             };
           }
@@ -379,8 +382,7 @@ const OrderList: React.FC<unknown> = () => {
           };
         }}
         pagination={{
-          pageSize: 10,
-          onChange: (page) => console.log(page),
+          defaultPageSize: 10,
         }}
         columns={columns}
         expandable={{
