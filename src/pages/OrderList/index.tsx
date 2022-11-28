@@ -69,7 +69,7 @@ const OrderList: React.FC<unknown> = () => {
       valueType: 'select',
       valueEnum: {
         1: 'R1',
-        3: 'R4',
+        4: 'R4',
         5: 'R5',
       },
     },
