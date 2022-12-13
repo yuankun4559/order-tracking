@@ -62,7 +62,11 @@
 
   .ant-pro-table-list-toolbar {
     .ant-pro-table-list-toolbar-right {
-      opacity: 0;
+      & > .ant-space-item {
+        &:last-child {
+          display: none;
+        }
+      }
     }
   }
 

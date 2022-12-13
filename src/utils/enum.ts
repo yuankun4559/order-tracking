@@ -12,7 +12,6 @@ const ORDER_HUANG_STATUS: IOrderStatus[] = [
     color: 'rgba(24,144,255,1)',
     bgColor: 'rgba(24,144,255,.1)',
   },
-  // new add
   {
     status: '2',
     name: 'OMS待下发',
@@ -73,6 +72,67 @@ const ORDER_HUANG_STATUS: IOrderStatus[] = [
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
+  // new add 2022-12-13
+  {
+    status: '12',
+    name: '待库内放单',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '13',
+    name: '分配库存异常',
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
+  },
+  {
+    status: '14',
+    name: '拣货中',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '15',
+    name: '装箱中',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '16',
+    name: '待揽件',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '17',
+    name: '已揽件',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '18',
+    name: '入分仓',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '19',
+    name: '出分仓',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '20',
+    name: '运输中',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '22',
+    name: '运输中',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
 ];
 
 const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
@@ -88,13 +148,20 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
     color: 'rgba(24,144,255,1)',
     bgColor: 'rgba(24,144,255,.1)',
   },
-
   {
     status: '13',
     name: '待签收',
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
+  // new add start 2022-12-03
+  {
+    status: '14',
+    name: '运输中',
+    color: 'rgba(82,196,26,1)',
+    bgColor: 'rgba(82,196,26,.1)',
+  },
+  // new add end 2022-12-03
   {
     status: '21',
     name: '已占库',
@@ -139,7 +206,7 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   },
   {
     status: '42',
-    name: '待下发仓库',
+    name: '等待预售到货',
     color: 'rgba(255,24,24,1)',
     bgColor: 'rgba(255,24,24,.1)',
   },
@@ -163,7 +230,7 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   },
   {
     status: '62',
-    name: '已发货', // 大菠萝
+    name: '待签收', // 大菠萝
     color: 'rgba(82,196,26,1)',
     bgColor: 'rgba(82,196,26,.1)',
   },
@@ -175,13 +242,73 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   },
   {
     status: '71',
-    name: '已发货', // 工厂通
+    name: '待签收', // 工厂通
     color: 'rgba(82,196,26,1)',
     bgColor: 'rgba(82,196,26,.1)',
   },
   {
     status: '72',
     name: '待发货', // 工厂通
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '81',
+    name: '入分仓',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '82',
+    name: '出分仓',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '91',
+    name: '待揽件/待自提',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '92',
+    name: '已揽件',
+    color: 'rgba(82,196,26,1)',
+    bgColor: 'rgba(82,196,26,.1)',
+  },
+  {
+    status: '93',
+    name: '运输中',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '94',
+    name: '已签收',
+    color: 'rgba(82,196,26,1)',
+    bgColor: 'rgba(82,196,26,.1)',
+  },
+  {
+    status: '101',
+    name: '待放单',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '102',
+    name: '分配库存异常',
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
+  },
+  {
+    status: '103',
+    name: '拣货中',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: '104',
+    name: '装箱中',
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },

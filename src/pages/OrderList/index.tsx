@@ -4,13 +4,16 @@ import {
   PageContainer,
   ProColumns,
   ProTable,
+  ProFormInstance,
 } from '@ant-design/pro-components';
 import { Badge, message, Tooltip, Button, Empty } from 'antd';
 import { DoubleRightOutlined } from '@ant-design/icons';
 import React, { useRef, useState } from 'react';
+import qs from 'querystring';
+import moment from 'moment';
 
 import { formatDecimal } from '@/utils/format';
-import { ORDER_HUANG_STATUS, ORDER_SKU_HUANG_STATUS } from '@/utils/data';
+import { ORDER_HUANG_STATUS, ORDER_SKU_HUANG_STATUS } from '@/utils/enum';
 
 const { queryOrderList, queryOrderDetailList } = servicesOrder.OrderController;
 
@@ -19,6 +22,7 @@ import './index.less';
 const OrderList: React.FC<unknown> = () => {
   const regX: RegExp = /^([a-zA-Z0-9]{1,},)*[a-zA-Z0-9]{1,}$/;
   const actionRef = useRef<ActionType>();
+  const refSearchForm = useRef<ProFormInstance>();
   const [isReset, setIsReset] = useState(false);
   const [isColloseAll, setIsColloseAll] = useState<boolean>(false);
   const [tableData, setTableData] = useState<API.UserInfo[]>([]);
@@ -34,6 +38,7 @@ const OrderList: React.FC<unknown> = () => {
       fieldProps: {
         placeholder: '请输入,多单查询以“,”分隔',
       },
+
       formItemProps: {
         rules: [
           {
@@ -163,9 +168,7 @@ const OrderList: React.FC<unknown> = () => {
       title: '当前状态',
       dataIndex: 'hangUpStatus',
       hideInSearch: true,
-      colSize: 2,
       width: 160,
-      // fixed: 'right',
       render: (text) => {
         const currentStatus = ORDER_HUANG_STATUS?.find(
           (item) => item.status === String(text),
@@ -249,6 +252,10 @@ const OrderList: React.FC<unknown> = () => {
     );
   };
 
+  /**
+   * @description: 获取商品列表（内嵌表格）
+   * @param {readonly} keys
+   */
   const getOrderDetailList = async (keys: readonly React.Key[]) => {
     try {
       const result = await queryOrderDetailList({
@@ -264,7 +271,11 @@ const OrderList: React.FC<unknown> = () => {
     }
   };
 
-  const handleToggleCollose = () => {
+  /**
+   * @description: 全部展开/全部收起
+   * @param {*} void
+   */
+  const handleToggleCollose = (): void => {
     // @ts-ignore
     const currentExpandRows: readonly React.Key[] = !isColloseAll
       ? tableData?.map((item) => item.subOrderNumber)
@@ -281,6 +292,10 @@ const OrderList: React.FC<unknown> = () => {
     setExpandedRowKeys(currentExpandRows);
   };
 
+  /**
+   * @description: 主表格展开/收起
+   * @param {React} keys
+   */
   const handleExpandChange = (keys: React.Key[]): void => {
     const isAllExpand: boolean =
       keys?.length > 0 && keys?.length === tableData?.length;
@@ -292,6 +307,34 @@ const OrderList: React.FC<unknown> = () => {
     // 批量查询子表格
     if (rowsExpandNew?.length === 0) return;
     getOrderDetailList(rowsExpandNew);
+  };
+
+  /**
+   * @description: 导出
+   */
+  const handleExport = (): void => {
+    if (refSearchForm.current) {
+      const values = refSearchForm.current.getFieldsValue();
+      const params = {
+        mainOrderNumber: values?.mainOrderNumber,
+        subOrderNumber: values?.subOrderNumber,
+        phone: values?.phone,
+        startTime:
+          values?.rangeDate?.length > 0
+            ? moment(values[0]).startOf('D').format('YYYY-MM-DD HH:mm:ss')
+            : undefined,
+        endTime:
+          values?.rangeDate?.length > 1
+            ? moment(values[1]).endOf('D').format('YYYY-MM-DD HH:mm:ss')
+            : undefined,
+        access_token: localStorage.getItem('TOKEN') || '',
+      };
+      window.open(
+        `${REACT_BASE_URL}/fulfillment-110/fulfillment-sub-order-detail/export?${qs.stringify(
+          params,
+        )}`,
+      );
+    }
   };
 
   return (
@@ -331,12 +374,14 @@ const OrderList: React.FC<unknown> = () => {
         actionRef={actionRef}
         rowKey="subOrderNumber"
         tableClassName="my-table"
+        formRef={refSearchForm}
         form={{
           ignoreRules: false,
         }}
         manualRequest={true}
         search={{
           labelWidth: 100,
+          showHiddenNum: true,
           className: 'my-search',
           defaultCollapsed: false,
           optionRender: (searchConfig, formProps, dom) => [...dom.reverse()],
@@ -398,6 +443,11 @@ const OrderList: React.FC<unknown> = () => {
           setExpandedRowKeys([]);
           setTableData([]);
         }}
+        toolBarRender={() => [
+          <Button key="out" type="primary" ghost onClick={handleExport}>
+            导出数据
+          </Button>,
+        ]}
       ></ProTable>
     </PageContainer>
   );

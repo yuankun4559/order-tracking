@@ -24,6 +24,10 @@ export default defineConfig({
     defaultCollapsed: true,
   },
   npmClient: 'yarn',
+  moment2dayjs: {
+    preset: 'antd',
+    plugins: ['duration'],
+  },
   locale: {
     default: 'zh-CN',
     antd: true,
