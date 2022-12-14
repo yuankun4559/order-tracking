@@ -7,15 +7,16 @@ import {
   ProFormInstance,
 } from '@ant-design/pro-components';
 import { Badge, message, Tooltip, Button, Empty } from 'antd';
-import { DoubleRightOutlined } from '@ant-design/icons';
+import { DoubleRightOutlined, CloudDownloadOutlined } from '@ant-design/icons';
+
 import React, { useRef, useState } from 'react';
-import qs from 'querystring';
 import moment from 'moment';
 
 import { formatDecimal } from '@/utils/format';
 import { ORDER_HUANG_STATUS, ORDER_SKU_HUANG_STATUS } from '@/utils/enum';
 
-const { queryOrderList, queryOrderDetailList } = servicesOrder.OrderController;
+const { queryOrderList, queryOrderDetailList, exportData } =
+  servicesOrder.OrderController;
 
 import './index.less';
 
@@ -312,28 +313,28 @@ const OrderList: React.FC<unknown> = () => {
   /**
    * @description: 导出
    */
-  const handleExport = (): void => {
+  const handleExport = async () => {
     if (refSearchForm.current) {
-      const values = refSearchForm.current.getFieldsValue();
-      const params = {
-        mainOrderNumber: values?.mainOrderNumber,
-        subOrderNumber: values?.subOrderNumber,
-        phone: values?.phone,
-        startTime:
-          values?.rangeDate?.length > 0
-            ? moment(values[0]).startOf('D').format('YYYY-MM-DD HH:mm:ss')
-            : undefined,
-        endTime:
-          values?.rangeDate?.length > 1
-            ? moment(values[1]).endOf('D').format('YYYY-MM-DD HH:mm:ss')
-            : undefined,
-        access_token: localStorage.getItem('TOKEN') || '',
-      };
-      window.open(
-        `${REACT_BASE_URL}/fulfillment-110/fulfillment-sub-order-detail/export?${qs.stringify(
-          params,
-        )}`,
-      );
+      try {
+        const values = refSearchForm.current.getFieldsValue();
+        const params = {
+          mainOrderNumber: values?.mainOrderNumber,
+          subOrderNumber: values?.subOrderNumber,
+          phone: values?.phone,
+          startTime:
+            values?.rangeDate?.length > 0
+              ? moment(values[0]).startOf('D').format('YYYY-MM-DD HH:mm:ss')
+              : undefined,
+          endTime:
+            values?.rangeDate?.length > 1
+              ? moment(values[1]).endOf('D').format('YYYY-MM-DD HH:mm:ss')
+              : undefined,
+        };
+        await exportData(params);
+        message.success('下载中,稍后将发送至您的邮件中,请注意查收!');
+      } catch (err: any) {
+        message.error(err?.message || err);
+      }
     }
   };
 
@@ -384,11 +385,18 @@ const OrderList: React.FC<unknown> = () => {
           showHiddenNum: true,
           className: 'my-search',
           defaultCollapsed: false,
-          optionRender: (searchConfig, formProps, dom) => [...dom.reverse()],
+          optionRender: (searchConfig, formProps, dom) => [
+            ...dom.reverse(),
+            <Tooltip title="下载" key="download-tooltip">
+              <CloudDownloadOutlined
+                key="download"
+                className="download-btn"
+                onClick={handleExport}
+              />
+            </Tooltip>,
+          ],
         }}
         request={async (params) => {
-          console.log('====================================');
-          console.log(params);
           if (
             !params?.mainOrderNumber &&
             !params?.subOrderNumber &&
@@ -400,11 +408,9 @@ const OrderList: React.FC<unknown> = () => {
             } else {
               message.warning('请输入查询条件!');
             }
-
             return {
               data: [],
               total: 0,
-
               success: true,
             };
           }
@@ -443,11 +449,15 @@ const OrderList: React.FC<unknown> = () => {
           setExpandedRowKeys([]);
           setTableData([]);
         }}
-        toolBarRender={() => [
-          <Button key="out" type="primary" ghost onClick={handleExport}>
-            导出数据
-          </Button>,
-        ]}
+        // toolBarRender={() => [
+        //   <Tooltip title="下载" key="download-tooltip">
+        //     <CloudDownloadOutlined
+        //       key="download"
+        //       className="download-btn"
+        //       onClick={handleExport}
+        //     />
+        //   </Tooltip>,
+        // ]}
       ></ProTable>
     </PageContainer>
   );

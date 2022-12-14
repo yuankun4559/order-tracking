@@ -19,3 +19,13 @@ export async function queryOrderDetailList(params = {}) {
     },
   );
 }
+
+export async function exportData(params = {}) {
+  return request(
+    `${REACT_BASE_URL}/${APP_PRE}/fulfillment-sub-order-detail/export`,
+    {
+      method: 'GET',
+      params,
+    },
+  );
+}
