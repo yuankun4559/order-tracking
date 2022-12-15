@@ -314,6 +314,10 @@ const OrderList: React.FC<unknown> = () => {
    * @description: 导出
    */
   const handleExport = async () => {
+    // if (tableData?.length === 0) {
+    //   message.warning('列表暂无数据！');
+    //   return;
+    // }
     if (refSearchForm.current) {
       try {
         const values = refSearchForm.current.getFieldsValue();
@@ -323,11 +327,15 @@ const OrderList: React.FC<unknown> = () => {
           phone: values?.phone,
           startTime:
             values?.rangeDate?.length > 0
-              ? moment(values[0]).startOf('D').format('YYYY-MM-DD HH:mm:ss')
+              ? moment(values.rangeDate[0])
+                  .startOf('day')
+                  .format('YYYY-MM-DD HH:mm:ss')
               : undefined,
           endTime:
             values?.rangeDate?.length > 1
-              ? moment(values[1]).endOf('D').format('YYYY-MM-DD HH:mm:ss')
+              ? moment(values.rangeDate[1])
+                  .endOf('day')
+                  .format('YYYY-MM-DD HH:mm:ss')
               : undefined,
         };
         await exportData(params);
