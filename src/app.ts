@@ -20,7 +20,7 @@ export const layout: RuntimeConfig['layout'] = () => {
 };
 
 export const request: RequestConfig = {
-  timeout: 5000,
+  timeout: 1000 * 60,
   timeoutErrorMessage: '请求超时',
   headers: {
     Authorization: localStorage.getItem('TOKEN') || '',
