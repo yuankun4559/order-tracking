@@ -105,7 +105,7 @@ const ORDER_HUANG_STATUS: IOrderStatus[] = [
   },
   {
     status: '17',
-    name: '已揽件',
+    name: '待入分仓',
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
