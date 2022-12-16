@@ -145,8 +145,8 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   {
     status: '12',
     name: 'OMS待下发',
-    color: 'rgba(24,144,255,1)',
-    bgColor: 'rgba(24,144,255,.1)',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
   },
   {
     status: '13',
@@ -158,8 +158,8 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   {
     status: '14',
     name: '运输中',
-    color: 'rgba(82,196,26,1)',
-    bgColor: 'rgba(82,196,26,.1)',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
   },
   // new add end 2022-12-03
   {
@@ -225,14 +225,14 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   {
     status: '61',
     name: '待店铺接单',
-    color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
   },
   {
     status: '62',
     name: '待签收', // 大菠萝
-    color: 'rgba(82,196,26,1)',
-    bgColor: 'rgba(82,196,26,.1)',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
   },
   {
     status: '63',
@@ -243,8 +243,8 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   {
     status: '71',
     name: '待签收', // 工厂通
-    color: 'rgba(82,196,26,1)',
-    bgColor: 'rgba(82,196,26,.1)',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
   },
   {
     status: '72',
@@ -285,8 +285,8 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   {
     status: '94',
     name: '运输中',
-    color: 'rgba(82,196,26,1)',
-    bgColor: 'rgba(82,196,26,.1)',
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
   },
   {
     status: '95',
