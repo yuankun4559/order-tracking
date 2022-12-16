@@ -33,7 +33,8 @@ export const request: RequestConfig = {
         // @ts-ignore
         if (res?.data?.code !== 200) {
           // @ts-ignore
-          message.error(res?.data?.message || 'ERROR');
+          // message.error(res?.data?.message || 'ERROR');
+          return Promise.reject(res?.data?.message || '出错了！');
         }
         return res?.data;
       },

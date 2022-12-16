@@ -24,6 +24,7 @@ const OrderList: React.FC<unknown> = () => {
   const regX: RegExp = /^([a-zA-Z0-9]{1,},)*[a-zA-Z0-9]{1,}$/;
   const actionRef = useRef<ActionType>();
   const refSearchForm = useRef<ProFormInstance>();
+  const [isLoading, setIsLoading] = useState(false);
   const [isReset, setIsReset] = useState(false);
   const [isColloseAll, setIsColloseAll] = useState<boolean>(false);
   const [tableData, setTableData] = useState<API.UserInfo[]>([]);
@@ -314,10 +315,6 @@ const OrderList: React.FC<unknown> = () => {
    * @description: 导出
    */
   const handleExport = async () => {
-    // if (tableData?.length === 0) {
-    //   message.warning('列表暂无数据！');
-    //   return;
-    // }
     if (refSearchForm.current) {
       try {
         const values = refSearchForm.current.getFieldsValue();
@@ -338,10 +335,13 @@ const OrderList: React.FC<unknown> = () => {
                   .format('YYYY-MM-DD HH:mm:ss')
               : undefined,
         };
+        setIsLoading(true);
         await exportData(params);
         message.success('下载中,稍后将发送至您的邮件中,请注意查收!');
+        setIsLoading(false);
       } catch (err: any) {
         message.error(err?.message || err);
+        setIsLoading(false);
       }
     }
   };
@@ -396,11 +396,12 @@ const OrderList: React.FC<unknown> = () => {
           optionRender: (searchConfig, formProps, dom) => [
             ...dom.reverse(),
             <Tooltip title="下载" key="download-tooltip">
-              <CloudDownloadOutlined
-                key="download"
-                className="download-btn"
-                onClick={handleExport}
-              />
+              <Button type="link" disabled={isLoading} onClick={handleExport}>
+                <CloudDownloadOutlined
+                  key="download"
+                  className="download-btn"
+                />
+              </Button>
             </Tooltip>,
           ],
         }}
