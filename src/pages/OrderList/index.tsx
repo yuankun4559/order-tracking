@@ -400,6 +400,7 @@ const OrderList: React.FC<unknown> = () => {
                 <CloudDownloadOutlined
                   key="download"
                   className="download-btn"
+                  style={{ color: isLoading ? 'grey' : '#1890ff' }}
                 />
               </Button>
             </Tooltip>,
