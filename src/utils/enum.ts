@@ -194,8 +194,8 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   {
     status: '61',
     name: '待店铺接单',
-    color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
   },
   {
     status: '62',
