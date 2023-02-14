@@ -1,4 +1,5 @@
 import { defineConfig } from '@umijs/max';
+const path = require('path');
 import routes from './src/routes';
 
 const env = process.env.UMI_ENV as string;
@@ -35,5 +36,17 @@ export default defineConfig({
   },
   define: {
     REACT_BASE_URL,
+  },
+  chainWebpack(config) {
+    config.module
+      .rule('less')
+      .test(/\.less$/)
+      .oneOf('css')
+      .use('sass-resources-loader')
+      .loader('sass-resources-loader')
+      .options({
+        resources: path.resolve(__dirname, './src/assets/styles/variable.less'),
+      })
+      .end();
   },
 });

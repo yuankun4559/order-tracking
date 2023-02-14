@@ -1,0 +1,35 @@
+.dfDrawerModal {
+  :global {
+    .ant-drawer-content {
+      .ant-drawer-body {
+        padding: 0;
+
+        .ant-pro-page-container {
+          .ant-page-header {
+            display: none;
+          }
+
+          & > .ant-pro-grid-content {
+            .ant-pro-table {
+              & > .ant-pro-card {
+                padding: 0;
+              }
+            }
+          }
+        }
+
+        // 工具栏
+        .ant-pro-table-list-toolbar {
+          // 右侧隐藏
+          .ant-pro-table-list-toolbar-right {
+            opacity: 0;
+          }
+        }
+
+        .ant-pro-table-search.ant-pro-table-search-query-filter.my-search {
+          display: none;
+        }
+      }
+    }
+  }
+}

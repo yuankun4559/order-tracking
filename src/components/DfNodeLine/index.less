@@ -1,0 +1,135 @@
+.defined-node-line {
+  .step-content {
+    .step-item {
+      position: relative;
+      cursor: pointer;
+      margin-top: 18px;
+
+      &:first-child {
+        margin-top: 8px;
+      }
+
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 6px;
+        height: 15px;
+        position: absolute;
+        left: 8px;
+        top: 25px;
+        background: url('@/assets/images/lineActive.png') center repeat-y;
+        background-size: cover;
+      }
+
+      &:last-child {
+        &::before {
+          display: none;
+        }
+      }
+
+      .circle {
+        position: relative;
+        z-index: 2;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #1890ff;
+        border-radius: 100%;
+        background-color: white;
+
+        .check-icon {
+          font-size: 10px;
+          font-weight: 800;
+          color: white;
+        }
+      }
+
+      .step-name {
+        padding-right: 18px;
+        border-radius: 20px;
+        font-size: 14px;
+        padding-left: 0;
+        height: 22px;
+        line-height: 22px;
+        background-color: #e4f4ff;
+        border: 1px solid #dff0fe;
+
+        .name {
+          margin-left: 10px;
+        }
+      }
+
+      &.active {
+        .circle {
+          border-color: #ff7f58;
+
+          .check-icon {
+            font-size: 10px;
+            font-weight: 800;
+            color: #ff7f58;
+          }
+        }
+
+        .step-name {
+          border-color: white;
+          background-color: #ff7f58;
+          color: white;
+          box-shadow: 5px 5px 8px 0 rgb(255 127 88 / 60%);
+        }
+
+        .step-desc {
+          color: #ff7f58;
+        }
+      }
+    }
+    // 针对有选择的
+    &.has-checked {
+      .step-item:not(.active) {
+        .circle {
+          border-color: #d3d3d3;
+        }
+
+        .step-name {
+          color: #333;
+          border-color: #efefef;
+          background-color: #efefef;
+
+          .name {
+            margin-left: 10px;
+          }
+        }
+
+        &:last-child {
+          &::before {
+            display: none;
+          }
+        }
+      }
+
+      .step-item {
+        .step-name {
+          border-color: white;
+          background-color: #ff7f58;
+          color: white;
+        }
+
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 6px;
+          height: 15px;
+          position: absolute;
+          left: 8px;
+          top: 25px;
+          background: url('@/assets/images/lineDefault.png') center repeat-y;
+          background-size: cover;
+        }
+
+        &:last-child {
+          &::before {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}

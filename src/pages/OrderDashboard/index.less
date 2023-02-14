@@ -1,0 +1,100 @@
+.dashboard-page-container {
+  .ant-page-header {
+    background-color: white;
+  }
+
+  .ant-pro-grid-content {
+    .ant-pro-grid-content-children {
+      .ant-pro-page-container-children-content {
+        padding: 0;
+
+        .order-dashboard {
+          align-items: inherit;
+          height: calc(100vh - 64px);
+
+          .order-filter {
+            padding: 0 24px 20px;
+            background-color: white;
+          }
+
+          .order-container {
+            width: 100%;
+            padding: 20px;
+            align-items: inherit;
+            overflow-y: auto;
+
+            .flex-distribution,
+            .flex-early-warning {
+              padding: 14px;
+              background-color: white;
+              min-height: 400px;
+              overflow-y: auto;
+            }
+
+            .flex-distribution {
+              flex-basis: 43%;
+              margin-right: 20px;
+
+              .deselect-btn {
+                color: @primary;
+              }
+
+              .content {
+                margin-top: 20px;
+                overflow-y: auto;
+              }
+
+              .box-right {
+                margin-left: 20%;
+              }
+            }
+
+            .flex-early-warning {
+              .prescription-monitor,
+              .prescription-warning {
+                margin-bottom: 24px;
+
+                .content {
+                  & > .ant-pro-card {
+                    .ant-pro-card-body {
+                      padding: 0;
+
+                      .ant-pro-card-col {
+                        padding: 0;
+                      }
+                    }
+                  }
+                }
+              }
+
+              .prescription-warning {
+                & > .ant-pro-card {
+                  .ant-pro-card-body {
+                    padding: 0;
+
+                    .ant-pro-card-col {
+                      padding: 0;
+                    }
+                  }
+                }
+              }
+
+              .extra-instructions {
+                color: @primary;
+
+                & > span.text {
+                  margin-left: 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .info-desc {
+    color: #000;
+    cursor: default;
+  }
+}

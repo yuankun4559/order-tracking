@@ -13,14 +13,31 @@ import React, { useRef, useState } from 'react';
 import moment from 'moment';
 
 import { formatDecimal } from '@/utils/format';
-import { ORDER_HUANG_STATUS, ORDER_SKU_HUANG_STATUS } from '@/utils/enum';
+import {
+  ORDER_CHANNEL,
+  ORDER_HUANG_TYPE,
+  ORDER_HUANG_STATUS,
+  ORDER_SKU_HUANG_TYPE,
+  WAREHOUSE_ENUM,
+  ORDER_SKU_HUANG_STATUS,
+  SHOP_TYPE_ENUMS,
+} from '@/utils/enum';
 
-const { queryOrderList, queryOrderDetailList, exportData } =
-  servicesOrder.OrderController;
+const {
+  queryOrderList,
+  queryOrderDetailList,
+  exportData,
+  getStoreEnumsMock,
+  getProvinceEnums,
+  getCarrierEnumsMock,
+  getBrandEnumsMock,
+} = servicesOrder.OrderController;
 
 import './index.less';
 
-const OrderList: React.FC<unknown> = () => {
+const OrderList = (props: IOrderPage) => {
+  const { from = '', transData = {} } = props;
+  console.log('order list page props from :', from, transData);
   const regX: RegExp = /^([a-zA-Z0-9]{1,},)*[a-zA-Z0-9]{1,}$/;
   const actionRef = useRef<ActionType>();
   const refSearchForm = useRef<ProFormInstance>();
@@ -33,14 +50,91 @@ const OrderList: React.FC<unknown> = () => {
     [],
   );
 
+  /**
+   * @description: 店铺模糊查询
+   * @param {any} params
+   */
+  const requestStoreEnums = async (params: any) => {
+    try {
+      const resData = await getStoreEnumsMock({ shopName: params?.keyWords });
+      return (resData || []).map((item: any) => ({
+        value: item.shopId,
+        label: item.shopName,
+      }));
+    } catch (error) {
+      return [];
+    }
+  };
+
+  /**
+   * @description: 品牌模糊查询
+   * @param {any} params
+   */
+  const requestBrandEnums = async (params: any) => {
+    try {
+      const resData = await getBrandEnumsMock({
+        brandName: params?.keyWords,
+        pageNum: 0,
+        pageSize: 50,
+      });
+      return (resData || []).map((item: any) => ({
+        value: item.brandId,
+        label: item.brandName,
+      }));
+    } catch (error) {
+      return [];
+    }
+  };
+
+  /**
+   * @description: 获取省市区数据
+   */
+  const requestProvinceEnums = async () => {
+    try {
+      const resData = await getProvinceEnums();
+      return resData || [];
+    } catch (error) {
+      return [];
+    }
+  };
+
+  /**
+   * @description: 获取承运商数据
+   * @param {any} params
+   */
+  const requestCarrierEnums = async (params: any) => {
+    try {
+      const resData = await getCarrierEnumsMock({
+        carrierName: params.keyWords,
+      });
+      return (resData || []).map((item: string) => ({
+        value: item,
+        label: item,
+      }));
+    } catch (error) {
+      return [];
+    }
+  };
+
   const columns: ProColumns<API.UserInfo>[] = [
+    {
+      title: '订单状态',
+      dataIndex: 'hangUpStatus',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+      },
+      valueType: 'select',
+      valueEnum: ORDER_HUANG_TYPE,
+      width: 120,
+    },
     {
       title: '子订单号',
       dataIndex: 'subOrderNumber',
       fieldProps: {
         placeholder: '请输入,多单查询以“,”分隔',
       },
-
       formItemProps: {
         rules: [
           {
@@ -69,17 +163,7 @@ const OrderList: React.FC<unknown> = () => {
       valueType: 'text',
       width: 120,
     },
-    {
-      title: '订单类型',
-      dataIndex: 'orderType',
-      hideInSearch: true,
-      valueType: 'select',
-      valueEnum: {
-        1: 'R1',
-        4: 'R4',
-        5: 'R5',
-      },
-    },
+
     {
       title: '手机号',
       dataIndex: 'phone',
@@ -95,6 +179,130 @@ const OrderList: React.FC<unknown> = () => {
       valueType: 'text',
     },
     {
+      title: '订单类型',
+      dataIndex: 'orderType',
+      // hideInSearch: true,
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+      },
+      valueType: 'select',
+      valueEnum: {
+        1: 'R1',
+        4: 'R4',
+        5: 'R5',
+      },
+    },
+    {
+      title: '订单渠道',
+      dataIndex: 'orderChannel',
+      valueType: 'select',
+      valueEnum: ORDER_CHANNEL,
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+      },
+    },
+    {
+      title: '子状态',
+      dataIndex: 'subHangUpStatus',
+      hideInTable: true,
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+      },
+      valueType: 'select',
+      valueEnum: ORDER_SKU_HUANG_TYPE,
+      width: 120,
+    },
+    {
+      title: '履约仓',
+      dataIndex: 'warehouseId',
+      hideInTable: true, // 仅搜索表单显示
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+      },
+      valueType: 'select',
+      valueEnum: WAREHOUSE_ENUM,
+      width: 120,
+    },
+    {
+      title: '店铺',
+      dataIndex: 'userId',
+      hideInTable: true, // 仅搜索表单显示
+      proFieldProps: {
+        debounceTime: 1000,
+      },
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+      },
+      valueType: 'select',
+      request: requestStoreEnums,
+      width: 120,
+    },
+    {
+      title: '省市区',
+      dataIndex: 'provinceParam',
+      hideInTable: true, // 仅搜索表单显示
+      proFieldProps: {
+        treeNodeFilterProp: 'title',
+      },
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+        changeOnSelect: true,
+        fieldNames: {
+          children: 'children',
+          label: 'name',
+          value: 'code',
+        },
+      },
+      valueType: 'cascader',
+      request: requestProvinceEnums,
+      width: 120,
+    },
+    {
+      title: '承运商',
+      dataIndex: 'carrier',
+      hideInTable: true, // 仅搜索表单显示
+      proFieldProps: {
+        debounceTime: 1000,
+      },
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+      },
+      valueType: 'select',
+      request: requestCarrierEnums,
+      width: 120,
+    },
+    {
+      title: '品牌',
+      dataIndex: 'brandId',
+      hideInTable: true, // 仅搜索表单显示
+      proFieldProps: {
+        debounceTime: 1000,
+      },
+      fieldProps: {
+        placeholder: '请选择',
+        showSearch: true,
+      },
+      valueType: 'select',
+      request: requestBrandEnums,
+      width: 120,
+    },
+    {
+      title: '商品编码',
+      dataIndex: 'skuCode',
+      fieldProps: {
+        placeholder: '请输入',
+      },
+      valueType: 'text',
+      width: 120,
+    },
+    {
       title: '下单日期',
       dataIndex: 'rangeDate',
       valueType: 'dateRange',
@@ -107,7 +315,7 @@ const OrderList: React.FC<unknown> = () => {
           };
         },
       },
-    },
+    }, // 搜索表单
     {
       title: '用户名',
       dataIndex: 'userName',
@@ -155,6 +363,17 @@ const OrderList: React.FC<unknown> = () => {
       },
     },
     {
+      title: '店铺类型',
+      dataIndex: 'shopType', // 接口缺字段
+      valueType: 'select',
+      valueEnum: SHOP_TYPE_ENUMS,
+      hideInSearch: true,
+      render: (_, record) => {
+        return record?.warehouseName || record?.shopName;
+      },
+    },
+
+    {
       title: '下单日期',
       dataIndex: 'orderCreateDate',
       valueType: 'date',
@@ -171,6 +390,7 @@ const OrderList: React.FC<unknown> = () => {
       dataIndex: 'hangUpStatus',
       hideInSearch: true,
       width: 160,
+      fixed: 'right',
       render: (text) => {
         const currentStatus = ORDER_HUANG_STATUS?.find(
           (item) => item.status === String(text),
@@ -346,6 +566,45 @@ const OrderList: React.FC<unknown> = () => {
     }
   };
 
+  const requestOrderList = async (params: any) => {
+    console.log('params', params, transData);
+    if (
+      !from &&
+      !params?.mainOrderNumber &&
+      !params?.subOrderNumber &&
+      !params?.phone &&
+      !params?.startTime
+    ) {
+      if (isReset) {
+        setIsReset(false);
+      } else {
+        message.warning('请输入查询条件!');
+      }
+      return {
+        data: [],
+        total: 0,
+        success: true,
+      };
+    }
+    setIsReset(false);
+    const { content = [], totalElements = 0 } = await queryOrderList({
+      // @ts-ignore
+      page: params?.current - 1,
+      size: params?.pageSize,
+      mainOrderNumber: params?.mainOrderNumber,
+      subOrderNumber: params?.subOrderNumber,
+      phone: params.phone,
+      startTime: params?.startTime,
+      endTime: params?.endTime,
+    });
+    setTableData(content || []);
+    return {
+      data: content || [],
+      total: totalElements || 0,
+      success: true,
+    };
+  };
+
   return (
     <PageContainer
       className="my-page-container"
@@ -357,29 +616,39 @@ const OrderList: React.FC<unknown> = () => {
     >
       <ProTable<API.UserInfo>
         headerTitle={
-          tableData?.length > 0 && (
-            <div className="table-collose-all" onClick={handleToggleCollose}>
+          tableData?.length >= 0 && (
+            <div className="table-collose-all">
               <Tooltip
                 placement="top"
                 title={isColloseAll ? '点击全部收起' : '点击全部展开'}
               >
                 <Button
-                  ghost
-                  type="primary"
                   icon={
                     <DoubleRightOutlined rotate={isColloseAll ? -90 : 90} />
                   }
+                  onClick={handleToggleCollose}
                 >
                   {isColloseAll ? '收起全部' : '展开全部'}
                 </Button>
               </Tooltip>
+              {from === 'DRAWER' && (
+                <Button
+                  ghost
+                  type="primary"
+                  className="m-l-10"
+                  disabled={isLoading}
+                  onClick={handleExport}
+                >
+                  导出
+                </Button>
+              )}
             </div>
           )
         }
         locale={{
           emptyText: <Empty description="输入查询条件后显示结果" />,
         }}
-        scroll={{ y: 'calc(100vh - 445px)' }}
+        scroll={{ y: 'calc(100vh - 445px)', x: 2000 }}
         actionRef={actionRef}
         rowKey="subOrderNumber"
         tableClassName="my-table"
@@ -387,7 +656,7 @@ const OrderList: React.FC<unknown> = () => {
         form={{
           ignoreRules: false,
         }}
-        manualRequest={true}
+        manualRequest={!from} // 手动触发首次请求
         search={{
           labelWidth: 100,
           showHiddenNum: true,
@@ -406,42 +675,7 @@ const OrderList: React.FC<unknown> = () => {
             </Tooltip>,
           ],
         }}
-        request={async (params) => {
-          if (
-            !params?.mainOrderNumber &&
-            !params?.subOrderNumber &&
-            !params?.phone &&
-            !params?.startTime
-          ) {
-            if (isReset) {
-              setIsReset(false);
-            } else {
-              message.warning('请输入查询条件!');
-            }
-            return {
-              data: [],
-              total: 0,
-              success: true,
-            };
-          }
-          setIsReset(false);
-          const { content = [], totalElements = 0 } = await queryOrderList({
-            // @ts-ignore
-            page: params?.current - 1,
-            size: params?.pageSize,
-            mainOrderNumber: params?.mainOrderNumber,
-            subOrderNumber: params?.subOrderNumber,
-            phone: params.phone,
-            startTime: params?.startTime,
-            endTime: params?.endTime,
-          });
-          setTableData(content || []);
-          return {
-            data: content || [],
-            total: totalElements || 0,
-            success: true,
-          };
-        }}
+        request={requestOrderList}
         pagination={{
           defaultPageSize: 10,
         }}
@@ -459,15 +693,6 @@ const OrderList: React.FC<unknown> = () => {
           setExpandedRowKeys([]);
           setTableData([]);
         }}
-        // toolBarRender={() => [
-        //   <Tooltip title="下载" key="download-tooltip">
-        //     <CloudDownloadOutlined
-        //       key="download"
-        //       className="download-btn"
-        //       onClick={handleExport}
-        //     />
-        //   </Tooltip>,
-        // ]}
       ></ProTable>
     </PageContainer>
   );
