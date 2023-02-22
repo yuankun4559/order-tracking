@@ -1,17 +1,31 @@
 // 运行时配置
 import type { RequestConfig, RuntimeConfig } from '@umijs/max';
 import { message } from 'antd';
+import authorityService from '@/services/authority';
+const { fetchUserRole } = authorityService.AuthorityController;
+
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState() {
-  return {};
+  // 查询用户权限
+  const data = await fetchUserRole();
+  return {
+    authoriy: data,
+    count: 10,
+  };
 }
+
+const handleCollapsed = (collapsed: boolean) => {
+  console.log('handleCollapsed', collapsed);
+};
 
 export const layout: RuntimeConfig['layout'] = () => {
   return {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     siderWidth: 180,
-    defaultCollapsed: false,
+    breakpoint: false,
+    defaultCollapsed: true,
+    onCollapse: handleCollapsed,
     menu: {
       locale: false,
       hideMenuWhenCollapsed: true,

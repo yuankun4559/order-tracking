@@ -1,27 +1,38 @@
-import { memo } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { Table } from 'antd';
-import rules from './ruleData';
+import servicesOrder from '@/services/order';
+const { getRulesData } = servicesOrder.OrderController;
 
 const DfInstruction = () => {
+  const [rules, setRules] = useState([]);
   const columns = [
     {
       title: '预警名',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'earlyWarningName',
+      key: 'earlyWarningName',
       width: 200,
     },
     {
       title: '预警规则',
-      dataIndex: 'rule',
-      key: 'rule',
+      dataIndex: 'earlyWarningTooltips',
+      key: 'earlyWarningTooltips',
     },
   ];
+
+  useEffect(() => {
+    (async () => {
+      const data = await getRulesData();
+      setRules(data || []);
+    })();
+  }, []);
+
   return (
     <Table
-      rowKey="name"
+      rowKey="earlyWarningName"
       dataSource={rules}
       columns={columns}
       pagination={false}
+      scroll={{ y: 520 }}
     />
   );
 };

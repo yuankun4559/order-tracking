@@ -1,5 +1,5 @@
 import { memo, useMemo } from 'react';
-import { Tooltip } from 'antd';
+import { message, Tooltip } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
 
 import './index.less';
@@ -18,16 +18,30 @@ const DfNodeLine = (props: any) => {
    * @param {any} nodeInfo
    */
   const handleCheck = (nodeInfo: any) => {
+    if (!nodeInfo?.fulfilledOrderVolume) {
+      message.warning('该节点当前单量为0, 无更多信息!');
+      return;
+    }
     props.onChange(nodeInfo);
   };
 
   const renderLineTips = (nodeInfo: any) => {
-    return nodeInfo?.descList?.map((i: any) => (
-      <div className="" key={i.key}>
-        <span>{i.key}: </span>
-        <span className="m-l-5">{i.value}</span>
+    return (
+      <div className="title-tooltip">
+        <div className="title-line">
+          <span>节点说明: </span>
+          <span className="m-l-5">{nodeInfo.nodeDescription}</span>
+        </div>
+        <div className="title-line">
+          <span>负责部门: </span>
+          <span className="m-l-5">{nodeInfo.responsibleDepartment}</span>
+        </div>
+        <div className="title-line">
+          <span>所涉系统: </span>
+          <span className="m-l-5">{nodeInfo.systemsInvolved}</span>
+        </div>
       </div>
-    ));
+    );
   };
 
   const renderLineBody = useMemo(() => {
@@ -41,6 +55,8 @@ const DfNodeLine = (props: any) => {
           return (
             <div
               className={`step-item flex-row-between-center ${
+                node.fulfilledOrderVolume === 0 ? 'disabled' : ''
+              }  ${
                 activeKeys?.length > 0 && activeKeys?.includes(node.key)
                   ? 'active'
                   : ''
@@ -50,16 +66,16 @@ const DfNodeLine = (props: any) => {
             >
               <Tooltip title={() => renderLineTips(node)} placement="right">
                 <div className="step-name flex-row-start-center">
-                  <span className="circle flex-row-center-center">
+                  <span className="circle flex-row-center-center flex-shrink-0">
                     {activeKeys?.length > 0 &&
                       activeKeys?.includes(node.key) && (
                         <CheckOutlined className="check-icon" />
                       )}
                   </span>
-                  <span className="name">{node.name}</span>
+                  <span className="name">{node.subHangUpStatusDesc}</span>
                 </div>
               </Tooltip>
-              <span className="step-desc">{node.value}</span>
+              <span className="step-desc">{node.fulfilledOrderVolume}</span>
             </div>
           );
         })}

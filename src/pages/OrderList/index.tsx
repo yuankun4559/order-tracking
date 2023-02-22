@@ -10,9 +10,10 @@ import { Badge, message, Tooltip, Button, Empty } from 'antd';
 import { DoubleRightOutlined, CloudDownloadOutlined } from '@ant-design/icons';
 
 import React, { useRef, useState } from 'react';
+import { useModel } from '@umijs/max';
 import moment from 'moment';
 
-import { formatDecimal } from '@/utils/format';
+import { formatDecimal } from '@/utils/util';
 import {
   ORDER_CHANNEL,
   ORDER_HUANG_TYPE,
@@ -20,103 +21,40 @@ import {
   ORDER_SKU_HUANG_TYPE,
   WAREHOUSE_ENUM,
   ORDER_SKU_HUANG_STATUS,
-  SHOP_TYPE_ENUMS,
+  // SHOP_TYPE_ENUMS,
 } from '@/utils/enum';
 
-const {
-  queryOrderList,
-  queryOrderDetailList,
-  exportData,
-  getStoreEnumsMock,
-  getProvinceEnums,
-  getCarrierEnumsMock,
-  getBrandEnumsMock,
-} = servicesOrder.OrderController;
+const { queryOrderList, exportData /* queryOrderDetailList */ } =
+  servicesOrder.OrderController;
+import {
+  requestCarrierEnums,
+  requestProvinceEnums,
+  requestBrandEnums,
+  requestStoreEnums,
+} from './requestFilter';
 
 import './index.less';
 
 const OrderList = (props: IOrderPage) => {
-  const { from = '', transData = {} } = props;
-  console.log('order list page props from :', from, transData);
+  const { from = '', transParams = {} } = props;
+  // const accessData = useAccess(); // 权限相关信息 后期权限配置可用 ！！
+  // const initialStateData = useModel('@@initialState'); // initialState
+  const { count } = useModel('counter');
+  console.log('initstate count:', count);
+
   const regX: RegExp = /^([a-zA-Z0-9]{1,},)*[a-zA-Z0-9]{1,}$/;
   const actionRef = useRef<ActionType>();
   const refSearchForm = useRef<ProFormInstance>();
   const [isLoading, setIsLoading] = useState(false);
   const [isReset, setIsReset] = useState(false);
   const [isColloseAll, setIsColloseAll] = useState<boolean>(false);
-  const [tableData, setTableData] = useState<API.UserInfo[]>([]);
-  const [innerData, setInnerData] = useState<API.IInnerTableRow>();
+  const [tableData, setTableData] = useState<API.OrderRow[]>([]);
+  // const [innerData, setInnerData] = useState<API.IInnerTableRow>();
   const [expandedRowKeys, setExpandedRowKeys] = useState<readonly React.Key[]>(
     [],
   );
 
-  /**
-   * @description: 店铺模糊查询
-   * @param {any} params
-   */
-  const requestStoreEnums = async (params: any) => {
-    try {
-      const resData = await getStoreEnumsMock({ shopName: params?.keyWords });
-      return (resData || []).map((item: any) => ({
-        value: item.shopId,
-        label: item.shopName,
-      }));
-    } catch (error) {
-      return [];
-    }
-  };
-
-  /**
-   * @description: 品牌模糊查询
-   * @param {any} params
-   */
-  const requestBrandEnums = async (params: any) => {
-    try {
-      const resData = await getBrandEnumsMock({
-        brandName: params?.keyWords,
-        pageNum: 0,
-        pageSize: 50,
-      });
-      return (resData || []).map((item: any) => ({
-        value: item.brandId,
-        label: item.brandName,
-      }));
-    } catch (error) {
-      return [];
-    }
-  };
-
-  /**
-   * @description: 获取省市区数据
-   */
-  const requestProvinceEnums = async () => {
-    try {
-      const resData = await getProvinceEnums();
-      return resData || [];
-    } catch (error) {
-      return [];
-    }
-  };
-
-  /**
-   * @description: 获取承运商数据
-   * @param {any} params
-   */
-  const requestCarrierEnums = async (params: any) => {
-    try {
-      const resData = await getCarrierEnumsMock({
-        carrierName: params.keyWords,
-      });
-      return (resData || []).map((item: string) => ({
-        value: item,
-        label: item,
-      }));
-    } catch (error) {
-      return [];
-    }
-  };
-
-  const columns: ProColumns<API.UserInfo>[] = [
+  const columns: ProColumns<API.OrderRow>[] = [
     {
       title: '订单状态',
       dataIndex: 'hangUpStatus',
@@ -192,6 +130,7 @@ const OrderList = (props: IOrderPage) => {
         4: 'R4',
         5: 'R5',
       },
+      width: 80,
     },
     {
       title: '订单渠道',
@@ -202,6 +141,7 @@ const OrderList = (props: IOrderPage) => {
         placeholder: '请选择',
         showSearch: true,
       },
+      width: 80,
     },
     {
       title: '子状态',
@@ -232,7 +172,7 @@ const OrderList = (props: IOrderPage) => {
       dataIndex: 'userId',
       hideInTable: true, // 仅搜索表单显示
       proFieldProps: {
-        debounceTime: 1000,
+        debounceTime: 800,
       },
       fieldProps: {
         placeholder: '请选择',
@@ -261,14 +201,21 @@ const OrderList = (props: IOrderPage) => {
       },
       valueType: 'cascader',
       request: requestProvinceEnums,
+      search: {
+        transform: (value) => ({
+          province: value?.length > 0 ? value[0] : undefined,
+          city: value?.length > 1 ? value[1] : undefined,
+          district: value?.length > 2 ? value[2] : undefined,
+        }),
+      },
       width: 120,
     },
     {
       title: '承运商',
-      dataIndex: 'carrier',
+      dataIndex: 'carrierName',
       hideInTable: true, // 仅搜索表单显示
       proFieldProps: {
-        debounceTime: 1000,
+        debounceTime: 800,
       },
       fieldProps: {
         placeholder: '请选择',
@@ -283,19 +230,24 @@ const OrderList = (props: IOrderPage) => {
       dataIndex: 'brandId',
       hideInTable: true, // 仅搜索表单显示
       proFieldProps: {
-        debounceTime: 1000,
+        debounceTime: 800,
       },
       fieldProps: {
         placeholder: '请选择',
         showSearch: true,
       },
       valueType: 'select',
+      params: {
+        pageIndex: 0,
+        pageSize: 1000,
+      },
       request: requestBrandEnums,
       width: 120,
     },
     {
       title: '商品编码',
       dataIndex: 'skuCode',
+      hideInTable: true,
       fieldProps: {
         placeholder: '请输入',
       },
@@ -321,12 +273,14 @@ const OrderList = (props: IOrderPage) => {
       dataIndex: 'userName',
       hideInSearch: true,
       valueType: 'text',
+      width: 100,
     },
     {
       title: '店铺名',
       dataIndex: 'storeName',
       hideInSearch: true,
       valueType: 'text',
+      width: 100,
     },
     {
       title: '省',
@@ -363,17 +317,6 @@ const OrderList = (props: IOrderPage) => {
       },
     },
     {
-      title: '店铺类型',
-      dataIndex: 'shopType', // 接口缺字段
-      valueType: 'select',
-      valueEnum: SHOP_TYPE_ENUMS,
-      hideInSearch: true,
-      render: (_, record) => {
-        return record?.warehouseName || record?.shopName;
-      },
-    },
-
-    {
       title: '下单日期',
       dataIndex: 'orderCreateDate',
       valueType: 'date',
@@ -390,7 +333,6 @@ const OrderList = (props: IOrderPage) => {
       dataIndex: 'hangUpStatus',
       hideInSearch: true,
       width: 160,
-      fixed: 'right',
       render: (text) => {
         const currentStatus = ORDER_HUANG_STATUS?.find(
           (item) => item.status === String(text),
@@ -419,27 +361,47 @@ const OrderList = (props: IOrderPage) => {
   ];
 
   const innderColumns: ProColumns<API.InnerOrderDetail>[] = [
-    { title: '商品编码', dataIndex: 'skuCode', valueType: 'text', width: 210 },
-    { title: '商品名', dataIndex: 'skuName', valueType: 'text', width: '20%' },
-    { title: '品牌', dataIndex: 'brandName', valueType: 'text' },
-    { title: '数量', dataIndex: 'quantity', valueType: 'text' },
+    { title: '商品编码', dataIndex: 'skuCode', valueType: 'text', width: 150 },
+    { title: '商品名', dataIndex: 'skuName', valueType: 'text', width: 220 },
+    { title: '品牌', dataIndex: 'brandName', valueType: 'text', width: 120 },
+    { title: '数量', dataIndex: 'quantity', valueType: 'text', width: 100 },
     {
       title: '合计金额',
       dataIndex: 'totalAmount',
       valueType: 'text',
-      renderText: (text) => formatDecimal(text || 0, 2),
+      renderText: (text) => {
+        return isNaN(text) ? text : formatDecimal(text || 0, 2);
+      },
+    },
+    {
+      title: '包裹号',
+      dataIndex: 'packageCode',
+      valueType: 'text',
+      // width: 100,
+    },
+    {
+      title: '运单号',
+      dataIndex: 'providerNo',
+      valueType: 'text',
+      // width: 120,
+    },
+    {
+      title: '承运商',
+      dataIndex: 'carrierName',
+      valueType: 'text',
+      width: 120,
     },
     {
       title: '子状态耗时(h)',
       dataIndex: 'hangUpTimeConsuming',
       valueType: 'text',
+      width: 120,
     },
     {
       title: '当前子状态',
       dataIndex: 'hangUpStatus',
       width: 160,
       render: (text) => {
-        console.log(text, '子状态');
         const currentStatus = ORDER_SKU_HUANG_STATUS?.find(
           (item) => item.status === String(text),
         );
@@ -454,19 +416,22 @@ const OrderList = (props: IOrderPage) => {
     },
   ];
 
-  const expandedRowRender = (record: API.UserInfo) => {
-    const data: API.InnerOrderDetail[] =
-      record?.subOrderNumber &&
-      innerData?.hasOwnProperty(record?.subOrderNumber)
-        ? innerData[record.subOrderNumber]
-        : [];
+  const expandedRowRender = (record: API.OrderRow) => {
+    // const data: API.InnerOrderDetail[] =
+    //   record?.subOrderNumber &&
+    //   innerData?.hasOwnProperty(record?.subOrderNumber)
+    //     ? innerData[record.subOrderNumber]
+    //     : []
+    const data: API.InnerOrderDetail[] = record?.fulfillmentSubOrderDetailList
+      ? record?.fulfillmentSubOrderDetailList
+      : [];
     return (
       <ProTable
-        rowKey="subOrderNumber"
         columns={innderColumns}
         headerTitle={false}
         search={false}
         options={false}
+        // dataSource={data}
         dataSource={data}
         pagination={false}
         className="my-table-inner"
@@ -478,20 +443,20 @@ const OrderList = (props: IOrderPage) => {
    * @description: 获取商品列表（内嵌表格）
    * @param {readonly} keys
    */
-  const getOrderDetailList = async (keys: readonly React.Key[]) => {
-    try {
-      const result = await queryOrderDetailList({
-        subOrderNumberList: keys.join(','),
-      });
-      const currentInnerData = {
-        ...innerData,
-        ...result,
-      };
-      setInnerData(currentInnerData);
-    } catch (err: any) {
-      message.error(err?.message || err);
-    }
-  };
+  // const getOrderDetailList = async (keys: readonly React.Key[]) => {
+  //   try {
+  //     const result = await queryOrderDetailList({
+  //       subOrderNumberList: keys.join(','),
+  //     });
+  //     const currentInnerData = {
+  //       ...innerData,
+  //       ...result,
+  //     };
+  //     setInnerData(currentInnerData);
+  //   } catch (err: any) {
+  //     message.error(err?.message || err);
+  //   }
+  // };
 
   /**
    * @description: 全部展开/全部收起
@@ -502,14 +467,14 @@ const OrderList = (props: IOrderPage) => {
     const currentExpandRows: readonly React.Key[] = !isColloseAll
       ? tableData?.map((item) => item.subOrderNumber)
       : [];
-    if (!isColloseAll) {
-      // 展开全部
-      const rowsExpandNew: readonly React.Key[] = currentExpandRows.filter(
-        (item) => !expandedRowKeys.includes(item),
-      );
-      if (rowsExpandNew?.length === 0) return;
-      getOrderDetailList(rowsExpandNew);
-    }
+    // if (!isColloseAll) {
+    //   // 展开全部
+    //   const rowsExpandNew: readonly React.Key[] = currentExpandRows.filter(
+    //     (item) => !expandedRowKeys.includes(item),
+    //   );
+    //   if (rowsExpandNew?.length === 0) return;
+    //   getOrderDetailList(rowsExpandNew);
+    // }
     setIsColloseAll(!isColloseAll);
     setExpandedRowKeys(currentExpandRows);
   };
@@ -521,24 +486,30 @@ const OrderList = (props: IOrderPage) => {
   const handleExpandChange = (keys: React.Key[]): void => {
     const isAllExpand: boolean =
       keys?.length > 0 && keys?.length === tableData?.length;
-    const rowsExpandNew: readonly React.Key[] = keys.filter(
-      (item) => !expandedRowKeys.includes(item),
-    );
+    // const rowsExpandNew: readonly React.Key[] = keys.filter(
+    //   (item) => !expandedRowKeys.includes(item),
+    // );
     setExpandedRowKeys(keys);
     setIsColloseAll(isAllExpand);
     // 批量查询子表格
-    if (rowsExpandNew?.length === 0) return;
-    getOrderDetailList(rowsExpandNew);
+    // if (rowsExpandNew?.length === 0) return;
+    // getOrderDetailList(rowsExpandNew);
   };
 
   /**
-   * @description: 导出
+   * @description: 导出表格数据
    */
   const handleExport = async () => {
     if (refSearchForm.current) {
       try {
         const values = refSearchForm.current.getFieldsValue();
-        const params = {
+        const province =
+          values.provinceParam?.length > 0 ? values[0] : undefined;
+        const city = values.provinceParam?.length > 1 ? values[1] : undefined;
+        const district =
+          values.provinceParam?.length > 2 ? values[2] : undefined;
+
+        let reqParams: any = {
           mainOrderNumber: values?.mainOrderNumber,
           subOrderNumber: values?.subOrderNumber,
           phone: values?.phone,
@@ -554,9 +525,29 @@ const OrderList = (props: IOrderPage) => {
                   .endOf('day')
                   .format('YYYY-MM-DD HH:mm:ss')
               : undefined,
+          hangUpStatus: values?.hangUpStatus, // 订单状态
+          orderType: values?.orderType, // 订单类型
+          orderChannel: values?.orderChannel, // 渠道
+          subHangUpStatus: values?.subHangUpStatus, // 子订单状态
+          warehouseId: values?.warehouseId, // 履约仓
+          shopName: values?.shopName, // 店铺
+          province, // 省
+          city, // 市
+          district, // 区
+          carrierName: values?.carrierName, //  承运商
+          brandId: values?.brandId, // 品牌
+          skuCode: values?.skuCode, // 商品编码
         };
+        if (from === 'DRAWER') {
+          reqParams = {
+            ...reqParams,
+            ...transParams,
+          };
+        }
+        console.log('导出数据params:', reqParams);
+
         setIsLoading(true);
-        await exportData(params);
+        await exportData(reqParams);
         message.success('下载中,稍后将发送至您的邮件中,请注意查收!');
         setIsLoading(false);
       } catch (err: any) {
@@ -566,15 +557,12 @@ const OrderList = (props: IOrderPage) => {
     }
   };
 
+  /**
+   * @description: 查询表格数据
+   * @param {any} params
+   */
   const requestOrderList = async (params: any) => {
-    console.log('params', params, transData);
-    if (
-      !from &&
-      !params?.mainOrderNumber &&
-      !params?.subOrderNumber &&
-      !params?.phone &&
-      !params?.startTime
-    ) {
+    if (!from && Object.keys(params).length <= 2) {
       if (isReset) {
         setIsReset(false);
       } else {
@@ -587,19 +575,68 @@ const OrderList = (props: IOrderPage) => {
       };
     }
     setIsReset(false);
-    const { content = [], totalElements = 0 } = await queryOrderList({
-      // @ts-ignore
+
+    let reqParams: any = {
       page: params?.current - 1,
       size: params?.pageSize,
-      mainOrderNumber: params?.mainOrderNumber,
-      subOrderNumber: params?.subOrderNumber,
-      phone: params.phone,
-      startTime: params?.startTime,
-      endTime: params?.endTime,
+      hangUpStatus: params?.hangUpStatus, // 订单状态
+      mainOrderNumber: params?.mainOrderNumber, // 主订单号
+      subOrderNumber: params?.subOrderNumber, // 子订单号
+      phone: params.phone, // 手机号
+      orderType: params?.orderType, // 订单类型
+      orderChannel: params?.orderChannel, // 渠道
+      subHangUpStatus: params?.subHangUpStatus, // 子订单状态
+      warehouseId: params?.warehouseId, // 履约仓
+      shopName: params?.shopName, // 店铺
+      province: params?.province, // 省
+      city: params?.city, // 市
+      district: params?.district, // 区
+      carrierName: params?.carrierName, //  承运商
+      brandId: params?.brandId, // 品牌
+      skuCode: params?.skuCode, // 商品编码
+      startTime: params?.startTime, // 开始时间
+      endTime: params?.endTime, // 结束时间
+    };
+    if (from === 'DRAWER') {
+      reqParams = {
+        ...reqParams,
+        ...transParams,
+      };
+    }
+    const { content = [], totalElements = 0 } = await queryOrderList({
+      ...reqParams,
     });
-    setTableData(content || []);
+    const dataContent: API.OrderRow[] = (content || []).map(
+      (row: API.OrderRow) => ({
+        ...row,
+        fulfillmentSubOrderDetailList: (
+          row?.fulfillmentSubOrderDetailList || []
+        ).map((innerRow: API.InnerOrderDetail, idx) => ({
+          ...innerRow,
+          key: `${innerRow.subOrderNumber}-${idx}`,
+        })),
+      }),
+    );
+    setTableData(dataContent);
+    if (
+      (params?.subHangUpStatus ||
+        params?.brandId ||
+        params?.skuCode ||
+        params?.carrierName) &&
+      dataContent?.length > 0
+    ) {
+      // 默认展开 -- 查询筛选项： 子状态||品牌||商品编码||承运商
+      const currentExpandRows: any[] = dataContent?.map(
+        (item) => item.subOrderNumber,
+      );
+      setIsColloseAll(true);
+      setExpandedRowKeys(currentExpandRows);
+    } else {
+      setIsColloseAll(false);
+      setExpandedRowKeys([]);
+    }
     return {
-      data: content || [],
+      data: dataContent,
       total: totalElements || 0,
       success: true,
     };
@@ -614,7 +651,7 @@ const OrderList = (props: IOrderPage) => {
         </Button>,
       ]}
     >
-      <ProTable<API.UserInfo>
+      <ProTable<API.OrderRow>
         headerTitle={
           tableData?.length >= 0 && (
             <div className="table-collose-all">
@@ -648,7 +685,7 @@ const OrderList = (props: IOrderPage) => {
         locale={{
           emptyText: <Empty description="输入查询条件后显示结果" />,
         }}
-        scroll={{ y: 'calc(100vh - 445px)', x: 2000 }}
+        scroll={{ y: !from ? 'calc(100vh - 445px)' : 'auto' }}
         actionRef={actionRef}
         rowKey="subOrderNumber"
         tableClassName="my-table"

@@ -2,7 +2,7 @@ interface IOrderStatus {
   status: string;
   name: string;
   color: string;
-  bgColor: string;
+  bgColor?: string;
 }
 
 interface IOrderType {
@@ -85,7 +85,7 @@ const ORDER_HUANG_STATUS: IOrderStatus[] = [
     name: ORDER_HUANG_TYPE[1]['text'],
     color: 'rgba(24,144,255,1)',
     bgColor: 'rgba(24,144,255,.1)',
-  },
+  }, // 蓝
   {
     status: ORDER_HUANG_TYPE[2]['key'],
     name: ORDER_HUANG_TYPE[2]['text'],
@@ -97,37 +97,37 @@ const ORDER_HUANG_STATUS: IOrderStatus[] = [
     name: ORDER_HUANG_TYPE[3]['text'],
     color: 'rgba(255,24,24,1)',
     bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_HUANG_TYPE[4]['key'],
     name: ORDER_HUANG_TYPE[4]['text'],
     color: 'rgba(255,24,24,1)',
     bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_HUANG_TYPE[5]['key'],
     name: ORDER_HUANG_TYPE[5]['text'],
     color: 'rgba(255,24,24,1)',
     bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_HUANG_TYPE[6]['key'],
     name: ORDER_HUANG_TYPE[6]['text'],
     color: 'rgba(24,144,255,1)',
     bgColor: 'rgba(24,144,255,.1)',
-  },
+  }, // 蓝
   {
     status: ORDER_HUANG_TYPE[7]['key'],
     name: ORDER_HUANG_TYPE[7]['text'],
     color: 'rgba(255,24,24,1)',
     bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_HUANG_TYPE[8]['key'],
     name: ORDER_HUANG_TYPE[8]['text'],
     color: 'rgba(255,24,24,1)',
     bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_HUANG_TYPE[9]['key'],
     name: ORDER_HUANG_TYPE[9]['text'],
@@ -175,7 +175,7 @@ const ORDER_HUANG_STATUS: IOrderStatus[] = [
     name: ORDER_HUANG_TYPE[16]['text'],
     color: 'rgba(82,196,26,1)',
     bgColor: 'rgba(82,196,26,.1)',
-  },
+  }, // 绿
 ];
 
 // sku状态
@@ -189,8 +189,8 @@ const ORDER_SKU_HUANG_TYPE = {
     text: 'OMS待下发',
   },
   1030: {
-    key: '13',
-    text: '待签收',
+    key: '1030',
+    text: '已占库',
   },
   1040: {
     key: '1040',
@@ -244,6 +244,10 @@ const ORDER_SKU_HUANG_TYPE = {
     key: '1140',
     text: '待揽件',
   },
+  1141: {
+    key: '1141',
+    text: '已揽件',
+  },
   1150: {
     key: '1150',
     text: '待入分仓',
@@ -292,6 +296,10 @@ const ORDER_SKU_HUANG_TYPE = {
     key: '1240',
     text: '部分签收',
   },
+  1241: {
+    key: '1241',
+    text: '代收',
+  },
   1245: {
     key: '1245',
     text: '派送异常',
@@ -328,6 +336,14 @@ const ORDER_SKU_HUANG_TYPE = {
     key: '1285',
     text: '滞留',
   },
+  1286: {
+    key: '1286',
+    text: '取消',
+  },
+  1290: {
+    key: '1290',
+    text: '待签收',
+  },
   1300: {
     key: '1300',
     text: '已签收',
@@ -340,229 +356,211 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
     status: ORDER_SKU_HUANG_TYPE[1010]['key'],
     name: ORDER_SKU_HUANG_TYPE[1010]['text'],
     color: 'rgba(24,144,255,1)',
-    bgColor: 'rgba(24,144,255,.1)',
-  },
+  }, // 蓝
   {
     status: ORDER_SKU_HUANG_TYPE[1020]['key'],
     name: ORDER_SKU_HUANG_TYPE[1020]['text'],
-    color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
-  },
+    color: 'rgba(24,144,255,1)',
+  }, // 蓝
   {
     status: ORDER_SKU_HUANG_TYPE[1030]['key'],
     name: ORDER_SKU_HUANG_TYPE[1030]['text'],
     color: 'rgba(82,196,26,1)',
-    bgColor: 'rgba(82,196,26,.1)',
-  },
+  }, // 绿
   {
     status: ORDER_SKU_HUANG_TYPE[1040]['key'],
     name: ORDER_SKU_HUANG_TYPE[1040]['text'],
     color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_SKU_HUANG_TYPE[1050]['key'],
     name: ORDER_SKU_HUANG_TYPE[1050]['text'],
     color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_SKU_HUANG_TYPE[1060]['key'],
     name: ORDER_SKU_HUANG_TYPE[1060]['text'],
     color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_SKU_HUANG_TYPE[1070]['key'],
     name: ORDER_SKU_HUANG_TYPE[1070]['text'],
     color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_SKU_HUANG_TYPE[1080]['key'],
     name: ORDER_SKU_HUANG_TYPE[1080]['text'],
     color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_SKU_HUANG_TYPE[1081]['key'],
     name: ORDER_SKU_HUANG_TYPE[1081]['text'],
     color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
     status: ORDER_SKU_HUANG_TYPE[1090]['key'],
     name: ORDER_SKU_HUANG_TYPE[1090]['text'],
     color: 'rgba(24,144,255,1)',
-    bgColor: 'rgba(24,144,255,.1)',
-  },
+  }, // 蓝
   {
     status: ORDER_SKU_HUANG_TYPE[1100]['key'],
     name: ORDER_SKU_HUANG_TYPE[1100]['text'],
     color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
-    status: '1110',
-    name: '待下发仓库',
+    status: ORDER_SKU_HUANG_TYPE[1110]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1110]['text'],
     color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  },
+  }, // 红
   {
-    status: '1120',
-    name: '已出库',
+    status: ORDER_SKU_HUANG_TYPE[1120]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1120]['text'],
     color: 'rgba(82,196,26,1)',
-    bgColor: 'rgba(82,196,26,.1)',
+  }, // 绿 已出库
+  {
+    status: ORDER_SKU_HUANG_TYPE[1130]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1130]['text'],
+    color: 'rgba(205,123,0,1)',
   },
   {
-    status: '1130',
-    name: '待发货',
+    status: ORDER_SKU_HUANG_TYPE[1131]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1131]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1131',
-    name: '出库中',
+    status: ORDER_SKU_HUANG_TYPE[1140]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1140]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1140',
-    name: '待揽件',
+    status: ORDER_SKU_HUANG_TYPE[1141]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1141]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1150',
-    name: '待入分仓',
+    status: ORDER_SKU_HUANG_TYPE[1150]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1150]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1160',
-    name: '待出分仓',
+    status: ORDER_SKU_HUANG_TYPE[1160]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1160]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1170',
-    name: '运输中',
+    status: ORDER_SKU_HUANG_TYPE[1170]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1170]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   }, // 仅履约看板用
   {
-    status: '1200',
-    name: '运输中',
+    status: ORDER_SKU_HUANG_TYPE[1200]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1200]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1205',
-    name: '到达网点',
+    status: ORDER_SKU_HUANG_TYPE[1205]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1205]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1210',
-    name: '站点拒收',
+    status: ORDER_SKU_HUANG_TYPE[1210]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1210]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1215',
-    name: '派送中',
+    status: ORDER_SKU_HUANG_TYPE[1215]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1215]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1220',
-    name: '派送站点取出',
+    status: ORDER_SKU_HUANG_TYPE[1220]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1220]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1225',
-    name: '派送站点签收',
+    status: ORDER_SKU_HUANG_TYPE[1225]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1225]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1230',
-    name: '拒收带回',
+    status: ORDER_SKU_HUANG_TYPE[1230]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1230]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1235',
-    name: '拒收带回撤销',
+    status: ORDER_SKU_HUANG_TYPE[1235]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1235]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1240',
-    name: '部分签收',
+    status: ORDER_SKU_HUANG_TYPE[1240]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1240]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1245',
-    name: '派送异常',
+    status: ORDER_SKU_HUANG_TYPE[1241]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1241]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1250',
-    name: '延迟派送',
+    status: ORDER_SKU_HUANG_TYPE[1245]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1245]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1255',
-    name: '客户拒签',
+    status: ORDER_SKU_HUANG_TYPE[1250]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1250]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1260',
-    name: '其他',
+    status: ORDER_SKU_HUANG_TYPE[1255]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1255]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1265',
-    name: '疑难件',
+    status: ORDER_SKU_HUANG_TYPE[1260]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1260]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1270',
-    name: '转投',
+    status: ORDER_SKU_HUANG_TYPE[1265]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1265]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1275',
-    name: '退回',
+    status: ORDER_SKU_HUANG_TYPE[1270]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1270]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1280',
-    name: '退回签收',
+    status: ORDER_SKU_HUANG_TYPE[1275]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1275]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1285',
-    name: '滞留',
+    status: ORDER_SKU_HUANG_TYPE[1280]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1280]['text'],
     color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: '1300',
-    name: '已签收',
+    status: ORDER_SKU_HUANG_TYPE[1285]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1285]['text'],
+    color: 'rgba(205,123,0,1)',
+  },
+  {
+    status: ORDER_SKU_HUANG_TYPE[1286]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1286]['text'],
+    color: 'rgba(205,123,0,1)',
+  },
+  {
+    status: ORDER_SKU_HUANG_TYPE[1290]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1290]['text'],
+    color: 'rgba(205,123,0,1)',
+  },
+  {
+    status: ORDER_SKU_HUANG_TYPE[1300]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1300]['text'],
     color: 'rgba(82,196,26,1)',
-    bgColor: 'rgba(82,196,26,.1)',
   },
 ];
 
@@ -618,22 +616,6 @@ const WAREHOUSE_ENUM = {
   },
 };
 
-// 店铺类型 平台/直发/工厂
-const SHOP_TYPE_ENUMS = {
-  平台: {
-    key: '平台',
-    text: '平台',
-  },
-  直发: {
-    key: '直发',
-    text: '直发',
-  },
-  工厂: {
-    key: '工厂',
-    text: '工厂',
-  },
-};
-
 export {
   ORDER_CHANNEL,
   ORDER_HUANG_TYPE,
@@ -642,5 +624,4 @@ export {
   ORDER_SKU_HUANG_STATUS,
   ORDER_TYPES,
   WAREHOUSE_ENUM,
-  SHOP_TYPE_ENUMS,
 };

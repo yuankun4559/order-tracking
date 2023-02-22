@@ -1,13 +1,6 @@
 import servicesOrder from '@/services/order';
-const {
-  queryOrderList,
-  queryOrderDetailList,
-  exportData,
-  getStoreEnumsMock,
-  getProvinceEnums,
-  getCarrierEnumsMock,
-  getBrandEnumsMock,
-} = servicesOrder.OrderController;
+const { getStoreEnums, getProvinceEnums, getCarrierEnums, getBrandEnums } =
+  servicesOrder.OrderController;
 
 /**
  * @description: 店铺模糊查询
@@ -15,7 +8,7 @@ const {
  */
 const requestStoreEnums = async (params: any) => {
   try {
-    const resData = await getStoreEnumsMock({ shopName: params?.keyWords });
+    const resData = await getStoreEnums({ shopName: params?.keyWords });
     return (resData || []).map((item: any) => ({
       value: item.shopId,
       label: item.shopName,
@@ -31,14 +24,14 @@ const requestStoreEnums = async (params: any) => {
  */
 const requestBrandEnums = async (params: any) => {
   try {
-    const resData = await getBrandEnumsMock({
+    const resData = await getBrandEnums({
       brandName: params?.keyWords,
       pageNum: 0,
-      pageSize: 50,
+      pageSize: 500,
     });
-    return (resData || []).map((item: any) => ({
-      value: item.brandId,
-      label: item.brandName,
+    return (resData?.content || []).map((item: any) => ({
+      value: item.id,
+      label: item.name,
     }));
   } catch (error) {
     return [];
@@ -63,12 +56,12 @@ const requestProvinceEnums = async () => {
  */
 const requestCarrierEnums = async (params: any) => {
   try {
-    const resData = await getCarrierEnumsMock({
+    const resData = await getCarrierEnums({
       carrierName: params.keyWords,
     });
-    return (resData || []).map((item: string) => ({
-      value: item,
-      label: item,
+    return (resData || []).map((item: any) => ({
+      value: item?.carrierName,
+      label: item?.carrierName,
     }));
   } catch (error) {
     return [];

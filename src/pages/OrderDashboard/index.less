@@ -34,18 +34,26 @@
             .flex-distribution {
               flex-basis: 43%;
               margin-right: 20px;
+              min-width: 500px;
+              overflow-x: auto;
 
               .deselect-btn {
                 color: @primary;
               }
 
               .content {
+                padding-block-end: 15px;
                 margin-top: 20px;
                 overflow-y: auto;
               }
 
+              .box-left {
+                margin-right: 15%;
+                max-width: 37.5%;
+              }
+
               .box-right {
-                margin-left: 20%;
+                max-width: 37.5%;
               }
             }
 

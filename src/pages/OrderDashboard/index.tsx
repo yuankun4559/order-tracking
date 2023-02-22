@@ -1,224 +1,137 @@
 import React, { memo, useEffect, useMemo, useState } from 'react';
-import { Button, Select, Drawer } from 'antd';
+import { Button, Select, message, Spin } from 'antd';
 import { PageContainer } from '@ant-design/pro-components';
 import { ProCard } from '@ant-design/pro-components';
 import { FileExclamationOutlined } from '@ant-design/icons';
 
 import { ORDER_TYPES } from '@/utils/enum';
-import './index.less';
+import { formatDataKey } from '@/utils/util';
+
 import DfNodeLine from '@/components/DfNodeLine';
 import DfAlertCard from '@/components/DfAlertCard';
 import DfModalInstruction from '@/components/DfModalInstruction';
 import CardDetailDrawer from './components/CardDetailDrawer';
 
-const dfR1 = [
-  {
-    name: '待支付',
-    key: 1,
-    value: 233,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-  {
-    name: 'OMS待下发',
-    key: 2,
-    value: 33,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-  {
-    name: '等待调拨',
-    key: 3,
-    value: 21,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-];
-const dfR4 = [
-  {
-    name: '待支付',
-    key: 11,
-    value: 82,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-  {
-    name: 'OMS待下发',
-    key: 12,
-    value: 68,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-  {
-    name: '等待调拨',
-    key: 13,
-    value: 73,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-];
-const dfR5 = [
-  {
-    name: '待支付',
-    key: 21,
-    value: 82,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-  {
-    name: 'OMS待下发',
-    key: 22,
-    value: 82,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-  {
-    name: '等待调拨',
-    key: 23,
-    value: 82,
-    descList: [
-      {
-        key: '节点说明',
-        value: '不数不胜数速度',
-      },
-      {
-        key: '负责部门',
-        value: '啊是范加尔夫鹅苦痛和苏俄u',
-      },
-    ],
-  },
-];
-const dfData1 = [
-  {
-    key: 1,
-    cardKey: 1,
-    name: '正常时效内',
-    percent: 78,
-  },
-  {
-    key: 2,
-    cardKey: 2,
-    name: '超时未收货',
-    percent: 22,
-  },
-  {
-    key: 3,
-    cardKey: 3,
-    name: '严重超时未收货',
-    percent: 3,
-  },
-];
-const dfData2: any = [
-  {
-    key: 4,
-    cardKey: 4,
-    name: '正常时效内',
-  },
-  {
-    key: 13,
-    cardKey: 13,
-    name: '严重超时未收货',
-  },
-  {
-    key: 5,
-    cardKey: 5,
-    name: '超时未收货',
-  },
-  {
-    key: 15,
-    cardKey: 3,
-    name: '严重超时未收货',
-  },
-];
-const OrderDashboard = () => {
-  const [orderType, setOrderType] = useState('');
-  const [activeKeys, setActiveKeys] = useState([]);
-  const [orderNodeR1, setOrderNodeR1] = useState(dfR1);
-  const [orderNodeR4, setOrderNodeR4] = useState(dfR4);
-  const [orderNodeR5, setOrderNodeR5] = useState(dfR5);
+import servicesOrder from '@/services/order';
+const { getOrderDistribution, getOrderPrescription } =
+  servicesOrder.OrderController;
 
-  const [warningData, setWarningData] = useState(dfData1); // 时效监控数据
-  const [alertData, setAlertData] = useState(dfData2); // 时效预警数据
+import './index.less';
+// import { useModel } from '@umijs/max';
+
+const OrderDashboard = () => {
+  // const { count, decrement } = useModel('counter');
+  // console.log('count:', count);
+  const [orderType, setOrderType] = useState('');
+  const [activeKeys, setActiveKeys] = useState<number[]>([]);
+
+  const [isDistributionLoading, setIsDistributionLoading] =
+    useState<boolean>(false);
+  const [orderNodeR1, setOrderNodeR1] = useState<OD.IOrderDistributionItem[]>(
+    [],
+  ); // r1 单量数据
+  const [orderNodeR4, setOrderNodeR4] = useState<OD.IOrderDistributionItem[]>(
+    [],
+  ); // r4 单量数据
+  const [orderNodeR5, setOrderNodeR5] = useState<OD.IOrderDistributionItem[]>(
+    [],
+  ); // r5 单量数据
+
+  const [warningData, setWarningData] = useState<OD.IOrderPrescriptionItem[]>(
+    [],
+  ); // 时效监控数据
+  const [alertData, setAlertData] = useState<OD.IOrderPrescriptionItem[]>(); // 时效预警数据
 
   const [isInstructionModalVisble, setIsInstructionModalVisble] =
     useState(false); // 操作说明弹窗
 
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [cardCheckedInfo, setCardCheckedInfo] = useState<AlertCardInfo>();
+  const [cardCheckedInfo, setCardCheckedInfo] =
+    useState<OD.IOrderPrescriptionItem>();
+
+  /**
+   * @description: 查询左侧单量分布
+   */
+  const initDistributionData = async () => {
+    try {
+      setIsDistributionLoading(true);
+      const nodeData = await getOrderDistribution({ orderType });
+      let additionalProperties1 = nodeData.hasOwnProperty(1) ? nodeData[1] : [];
+      additionalProperties1 = formatDataKey(
+        additionalProperties1 || [],
+        '1',
+        'subHangUpStatus',
+      );
+      setOrderNodeR1(additionalProperties1);
+
+      let additionalProperties4 = nodeData.hasOwnProperty(4) ? nodeData[4] : [];
+      additionalProperties4 = formatDataKey(
+        additionalProperties4 || [],
+        '4',
+        'subHangUpStatus',
+      );
+      setOrderNodeR4(additionalProperties4);
+
+      let additionalProperties5 = nodeData.hasOwnProperty(5) ? nodeData[5] : [];
+      additionalProperties5 = formatDataKey(
+        additionalProperties5 || [],
+        '5',
+        'subHangUpStatus',
+      );
+      setOrderNodeR5(additionalProperties5);
+      setIsDistributionLoading(false);
+    } catch (err: any) {
+      message.error(err?.message || err);
+      setIsDistributionLoading(false);
+    }
+  };
+
+  /**
+   * @description: 查询右侧失效监控
+   */
+  const initPrescriptionData = async () => {
+    try {
+      const combinationConditionList = activeKeys?.map((key: any) => ({
+        orderType: key.split('@')[0],
+        subHangUpStatus: key.split('@')[1],
+      }));
+      const params = {
+        combinationConditionList,
+        orderType,
+      };
+      const cardData = await getOrderPrescription(params);
+      if (JSON.stringify(cardData) !== '{}') {
+        if (cardData.hasOwnProperty('1')) {
+          // 端到端时效
+          setWarningData(cardData['1']);
+        }
+        if (cardData.hasOwnProperty('2')) {
+          // 节点时效
+          setAlertData(cardData['2']);
+        }
+      }
+      console.log('aaaaa', cardData);
+    } catch (err: any) {
+      message.error(err?.message || err);
+    }
+  };
 
   useEffect(() => {
-    console.log('条件变更，重新查询节点单量分布', orderType, activeKeys);
-  }, [orderType, activeKeys]);
+    console.log('订单类型条件变更，重新查询节点单量分布', orderType);
+    initDistributionData(); //
+  }, [orderType]);
+
+  useEffect(() => {
+    console.log('选节点条件变更，重新查询节点时效分布', orderType, activeKeys);
+    initPrescriptionData(); //
+  }, [activeKeys]);
 
   /**
    * @description: 订单类型改变
    * @param {any} value
    */
   const handleOTChange = (value: any) => {
+    console.log('value', value);
     setOrderType(value);
     setActiveKeys([]);
   };
@@ -242,15 +155,16 @@ const OrderDashboard = () => {
 
   /**
    * @description: 选择预警卡片
-   * @param {AlertCardInfo} cardInfo
+   * @param {AlertCardInfo} cInfo
    */
-  const handleCardCheck = (cardInfo: AlertCardInfo): void => {
-    console.log('======cardInfo======', cardInfo, cardCheckedInfo);
-    setCardCheckedInfo(cardInfo);
+  const handleCardCheck = (cInfo: OD.IOrderPrescriptionItem): void => {
+    setCardCheckedInfo(cInfo);
     setIsDrawerVisible(true);
   };
 
   const handleDrawerClose = () => {
+    console.log('aaaaa open');
+
     setIsDrawerVisible(false);
     setCardCheckedInfo(undefined);
   };
@@ -272,20 +186,19 @@ const OrderDashboard = () => {
   }, [activeKeys]);
 
   const renderBoxLeft = useMemo(() => {
-    return (
+    return orderNodeR1?.length === 0 ? null : (
       <div className="box-left flex-flex1">
         <DfNodeLine
           nodeType="R1"
           title="R1节点"
           unitName="单量"
           activeKeys={activeKeys}
-          // hasChecked={activeKeys !== -1}
           data={orderNodeR1}
           onChange={handleLineChange}
         />
       </div>
     );
-  }, [activeKeys]);
+  }, [activeKeys, orderNodeR1]);
 
   const renderBoxRight = useMemo(() => {
     return (
@@ -295,6 +208,7 @@ const OrderDashboard = () => {
             nodeType="R4"
             title="R4节点"
             unitName="单量"
+            pClassName="m-b-30"
             activeKeys={activeKeys}
             data={orderNodeR4}
             onChange={handleLineChange}
@@ -306,7 +220,6 @@ const OrderDashboard = () => {
             nodeType="R5"
             title="R5节点"
             unitName="单量"
-            pClassName="m-t-30"
             activeKeys={activeKeys}
             data={orderNodeR5}
             onChange={handleLineChange}
@@ -319,16 +232,17 @@ const OrderDashboard = () => {
   const renderMonitorWarning = useMemo(() => {
     return (
       <ProCard gutter={16} wrap>
-        {warningData?.map((item: AlertCardInfo) => (
+        {warningData?.map((item: OD.IOrderPrescriptionItem) => (
           <ProCard
-            key={item.key}
+            key={item.earlyWarningCode}
             colSpan={{ xs: 24, sm: 24, md: 24, lg: 12, xl: 8 }}
+            style={{ paddingBlockEnd: 12 }}
           >
             <DfAlertCard
-              key={item.key}
-              activeKey={cardCheckedInfo?.cardKey}
-              cardKey={item.cardKey}
-              cardTitle={item.name}
+              {...item}
+              cardKey={item.earlyWarningCode}
+              activeKey={cardCheckedInfo?.earlyWarningCode}
+              cardTitle={item.earlyWarningName}
               cardTitleVal={item.percent}
               onChange={() => handleCardCheck(item)}
             />
@@ -341,17 +255,18 @@ const OrderDashboard = () => {
   const renderMonitorAlert = useMemo(() => {
     return (
       <ProCard gutter={16} wrap>
-        {alertData?.map((item: AlertCardInfo) => (
+        {alertData?.map((item: OD.IOrderPrescriptionItem) => (
           <ProCard
-            key={item.key}
+            key={item.earlyWarningCode}
             colSpan={{ xs: 24, sm: 24, md: 24, lg: 12, xl: 8 }}
             style={{ paddingBlockEnd: 12 }}
           >
             <DfAlertCard
-              key={item.key}
-              activeKey={cardCheckedInfo?.cardKey}
-              cardKey={item.cardKey}
-              cardTitle={item.name}
+              {...item}
+              key={item.earlyWarningCode}
+              cardKey={item.earlyWarningCode}
+              activeKey={cardCheckedInfo?.earlyWarningCode}
+              cardTitle={item.earlyWarningName}
               cardTitleVal={item.percent}
               onChange={() => handleCardCheck(item)}
             />
@@ -382,15 +297,19 @@ const OrderDashboard = () => {
         </div>
         <div className="order-container flex-flex1 flex-row-start-start">
           {/* 左侧-分布情况 */}
+
           <div className="flex-distribution flex-col-start-start align-items-stretch">
-            {renderBoxHeader}
-            <div className="content flex-row-start-start">
-              {/* R1 */}
-              {renderBoxLeft}
-              {/* R5、R5 */}
-              {renderBoxRight}
-            </div>
+            <Spin spinning={isDistributionLoading} delay={100}>
+              {renderBoxHeader}
+              <div className="content flex-row-start-start">
+                {/* R1 */}
+                {renderBoxLeft}
+                {/* R5、R5 */}
+                {renderBoxRight}
+              </div>
+            </Spin>
           </div>
+
           {/* 右侧-预警统计 */}
           <div className="flex-early-warning flex-flex1">
             {/* 时效监控 */}
@@ -429,9 +348,11 @@ const OrderDashboard = () => {
       {isDrawerVisible && (
         <CardDetailDrawer
           open={isDrawerVisible}
-          title={cardCheckedInfo?.name}
+          title={cardCheckedInfo?.earlyWarningName}
           transData={cardCheckedInfo}
-          height={800}
+          activeKeys={activeKeys}
+          orderType={orderType}
+          height={880}
           onClose={handleDrawerClose}
         />
       )}

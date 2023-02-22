@@ -13,9 +13,12 @@ const DfAlertCard = (props: IntAlertCard) => {
     cardKey = '',
     activeKey = '',
     className = '',
-    cardTitle = '正常时效内',
+    cardTitle = '',
     cardTitleVal = 78,
-    desc = '你好什么不给发货发布会上个网v好的啦啦\n患得患失艴然不悦共商国是他问我ss\n',
+    fulfilledOrderVolume = 0,
+    customerNumber = 0,
+    gmv = 0,
+    earlyWarningTooltips = '',
     onChange,
   } = props;
 
@@ -34,20 +37,20 @@ const DfAlertCard = (props: IntAlertCard) => {
       <Row>
         <Col span={12}>
           <div className="flex-row-start-center">
-            <span className="fs-10 flex-shrink-0">单量: </span>
-            <span className="fs-16 m-l-5">82</span>
+            <span className="text flex-shrink-0">单量: </span>
+            <span className="value m-l-5">{fulfilledOrderVolume}</span>
           </div>
         </Col>
         <Col span={12}>
           <div className="flex-row-start-center">
-            <span className="fs-10 flex-shrink-0">客户数: </span>
-            <span className="fs-16 m-l-5">321</span>
+            <span className="text flex-shrink-0">客户数: </span>
+            <span className="value m-l-5">{customerNumber}</span>
           </div>
         </Col>
         <Col span={24}>
           <div className="flex-row-start-center">
-            <span className="fs-10 flex-shrink-0">GMV: </span>
-            <span className="fs-16 m-l-5">3892</span>
+            <span className="text flex-shrink-0">GMV: </span>
+            <span className="value m-l-5">{gmv}</span>
           </div>
         </Col>
       </Row>
@@ -67,7 +70,7 @@ const DfAlertCard = (props: IntAlertCard) => {
   }, [cardKey]);
 
   return (
-    <Tooltip title={desc}>
+    <Tooltip title={earlyWarningTooltips}>
       <div
         className={`defined-alert-card pointer ${className} ${cardColor} ${
           activeKey === cardKey ? 'is-active' : ''

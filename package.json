@@ -18,6 +18,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@ant-design/pro-components": "^2.0.1",
+    "@antv/g2": "3.4.10",
     "@umijs/max": "^4.0.32",
     "antd": "^4.20.7"
   },
