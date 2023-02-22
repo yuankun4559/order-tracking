@@ -1,16 +1,16 @@
 // 运行时配置
 import type { RequestConfig, RuntimeConfig } from '@umijs/max';
 import { message } from 'antd';
-import authorityService from '@/services/authority';
-const { fetchUserRole } = authorityService.AuthorityController;
+// import authorityService from '@/services/authority';
+// const { fetchUserRole } = authorityService.AuthorityController;
 
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://next.umijs.org/docs/api/runtime-config#getinitialstate
 export async function getInitialState() {
   // 查询用户权限
-  const data = await fetchUserRole();
+  // const data = await fetchUserRole();
   return {
-    authoriy: data,
+    // authoriy: data,
     count: 10,
   };
 }
