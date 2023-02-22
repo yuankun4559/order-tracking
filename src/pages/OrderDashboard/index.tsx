@@ -352,7 +352,7 @@ const OrderDashboard = () => {
           transData={cardCheckedInfo}
           activeKeys={activeKeys}
           orderType={orderType}
-          height={880}
+          // height={calc('100vh' - '120px')}
           onClose={handleDrawerClose}
         />
       )}

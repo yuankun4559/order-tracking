@@ -169,7 +169,7 @@ const OrderList = (props: IOrderPage) => {
     },
     {
       title: '店铺',
-      dataIndex: 'userId',
+      dataIndex: 'shopName',
       hideInTable: true, // 仅搜索表单显示
       proFieldProps: {
         debounceTime: 800,
@@ -296,7 +296,7 @@ const OrderList = (props: IOrderPage) => {
     },
     {
       title: '区',
-      dataIndex: 'area',
+      dataIndex: 'district',
       hideInSearch: true,
       valueType: 'text',
     },
@@ -500,14 +500,23 @@ const OrderList = (props: IOrderPage) => {
    * @description: 导出表格数据
    */
   const handleExport = async () => {
+    console.log('<<<<<<');
+
     if (refSearchForm.current) {
       try {
         const values = refSearchForm.current.getFieldsValue();
         const province =
-          values.provinceParam?.length > 0 ? values[0] : undefined;
-        const city = values.provinceParam?.length > 1 ? values[1] : undefined;
+          values.provinceParam?.length > 0
+            ? values['provinceParam'][0]
+            : undefined;
+        const city =
+          values.provinceParam?.length > 1
+            ? values['provinceParam'][1]
+            : undefined;
         const district =
-          values.provinceParam?.length > 2 ? values[2] : undefined;
+          values.provinceParam?.length > 2
+            ? values['provinceParam'][2]
+            : undefined;
 
         let reqParams: any = {
           mainOrderNumber: values?.mainOrderNumber,

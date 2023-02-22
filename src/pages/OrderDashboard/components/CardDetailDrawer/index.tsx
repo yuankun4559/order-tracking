@@ -12,7 +12,6 @@ const CardDetailDrawer = (props: IDrawer) => {
   const {
     open = false,
     title = '',
-    height = 400,
     wrapClassName = '', // 当前卡片详细信息、订单类型、节点等数据
     transData,
     orderType = '',
@@ -34,7 +33,7 @@ const CardDetailDrawer = (props: IDrawer) => {
   return (
     <Drawer
       title={title}
-      height={height}
+      height={`calc(100vh - 120px)`}
       placement="bottom"
       closable={true}
       onClose={onClose}

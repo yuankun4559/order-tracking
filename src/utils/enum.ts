@@ -12,68 +12,72 @@ interface IOrderType {
 
 // 订单类型
 const ORDER_HUANG_TYPE = {
-  1: {
-    key: '1',
+  10: {
+    key: '10',
     text: '待支付',
   },
-  2: {
-    key: '2',
+  20: {
+    key: '20',
     text: 'OMS待下发',
   },
-  3: {
-    key: '3',
+  30: {
+    key: '30',
     text: '待店铺接单',
   },
-  4: {
-    key: '4',
+  31: {
+    key: '31',
+    text: '已拒单',
+  },
+  40: {
+    key: '40',
     text: '等待占库中',
   },
-  5: {
-    key: '5',
+  50: {
+    key: '50',
     text: '疫情拦截',
   },
-  6: {
-    key: '6',
+  60: {
+    key: '60',
     text: '延期发货',
   },
-  7: {
+  70: {
     key: '7',
     text: '出库拦截',
   },
-  8: {
-    key: '8',
+  80: {
+    key: '80',
     text: 'ODS挂起',
   },
-  9: {
-    key: '9',
+  90: {
+    key: '90',
     text: '出库中',
   },
-  10: {
-    key: '10',
+  100: {
+    key: '100',
     text: '待发货',
   },
-  11: {
-    key: '11',
+  110: {
+    key: '110',
     text: '待揽件',
   },
-  12: {
-    key: '12',
+  120: {
+    key: '120',
     text: '待入分仓',
   },
-  13: {
-    key: '13',
+  130: {
+    key: '130',
     text: '待出分仓',
   },
-  14: {
-    key: '14',
+  140: {
+    key: '140',
     text: '运输中',
   },
-  15: {
-    key: '15',
+  150: {
+    key: '150',
     text: '待签收',
   },
-  16: {
-    key: '16',
+  160: {
+    key: '160',
     text: '已签收',
   },
 };
@@ -81,98 +85,104 @@ const ORDER_HUANG_TYPE = {
 // 订单类型+颜色
 const ORDER_HUANG_STATUS: IOrderStatus[] = [
   {
-    status: ORDER_HUANG_TYPE[1]['key'],
-    name: ORDER_HUANG_TYPE[1]['text'],
-    color: 'rgba(24,144,255,1)',
-    bgColor: 'rgba(24,144,255,.1)',
-  }, // 蓝
-  {
-    status: ORDER_HUANG_TYPE[2]['key'],
-    name: ORDER_HUANG_TYPE[2]['text'],
-    color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
-  },
-  {
-    status: ORDER_HUANG_TYPE[3]['key'],
-    name: ORDER_HUANG_TYPE[3]['text'],
-    color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  }, // 红
-  {
-    status: ORDER_HUANG_TYPE[4]['key'],
-    name: ORDER_HUANG_TYPE[4]['text'],
-    color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  }, // 红
-  {
-    status: ORDER_HUANG_TYPE[5]['key'],
-    name: ORDER_HUANG_TYPE[5]['text'],
-    color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  }, // 红
-  {
-    status: ORDER_HUANG_TYPE[6]['key'],
-    name: ORDER_HUANG_TYPE[6]['text'],
-    color: 'rgba(24,144,255,1)',
-    bgColor: 'rgba(24,144,255,.1)',
-  }, // 蓝
-  {
-    status: ORDER_HUANG_TYPE[7]['key'],
-    name: ORDER_HUANG_TYPE[7]['text'],
-    color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  }, // 红
-  {
-    status: ORDER_HUANG_TYPE[8]['key'],
-    name: ORDER_HUANG_TYPE[8]['text'],
-    color: 'rgba(255,24,24,1)',
-    bgColor: 'rgba(255,24,24,.1)',
-  }, // 红
-  {
-    status: ORDER_HUANG_TYPE[9]['key'],
-    name: ORDER_HUANG_TYPE[9]['text'],
-    color: 'rgba(205,123,0,1)',
-    bgColor: 'rgba(205,123,0,.1)',
-  },
-  {
     status: ORDER_HUANG_TYPE[10]['key'],
     name: ORDER_HUANG_TYPE[10]['text'],
+    color: 'rgba(24,144,255,1)',
+    bgColor: 'rgba(24,144,255,.1)',
+  }, // 蓝
+  {
+    status: ORDER_HUANG_TYPE[20]['key'],
+    name: ORDER_HUANG_TYPE[20]['text'],
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: ORDER_HUANG_TYPE[11]['key'],
-    name: ORDER_HUANG_TYPE[11]['text'],
+    status: ORDER_HUANG_TYPE[30]['key'],
+    name: ORDER_HUANG_TYPE[30]['text'],
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
+  }, // 红
+  {
+    status: ORDER_HUANG_TYPE[31]['key'],
+    name: ORDER_HUANG_TYPE[31]['text'],
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
+  }, // 红
+  {
+    status: ORDER_HUANG_TYPE[40]['key'],
+    name: ORDER_HUANG_TYPE[40]['text'],
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
+  }, // 红
+  {
+    status: ORDER_HUANG_TYPE[50]['key'],
+    name: ORDER_HUANG_TYPE[50]['text'],
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
+  }, // 红
+  {
+    status: ORDER_HUANG_TYPE[60]['key'],
+    name: ORDER_HUANG_TYPE[60]['text'],
+    color: 'rgba(24,144,255,1)',
+    bgColor: 'rgba(24,144,255,.1)',
+  }, // 蓝
+  {
+    status: ORDER_HUANG_TYPE[70]['key'],
+    name: ORDER_HUANG_TYPE[70]['text'],
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
+  }, // 红
+  {
+    status: ORDER_HUANG_TYPE[80]['key'],
+    name: ORDER_HUANG_TYPE[80]['text'],
+    color: 'rgba(255,24,24,1)',
+    bgColor: 'rgba(255,24,24,.1)',
+  }, // 红
+  {
+    status: ORDER_HUANG_TYPE[90]['key'],
+    name: ORDER_HUANG_TYPE[90]['text'],
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: ORDER_HUANG_TYPE[12]['key'],
-    name: ORDER_HUANG_TYPE[12]['text'],
+    status: ORDER_HUANG_TYPE[100]['key'],
+    name: ORDER_HUANG_TYPE[100]['text'],
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: ORDER_HUANG_TYPE[13]['key'],
-    name: ORDER_HUANG_TYPE[13]['text'],
+    status: ORDER_HUANG_TYPE[110]['key'],
+    name: ORDER_HUANG_TYPE[110]['text'],
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: ORDER_HUANG_TYPE[14]['key'],
-    name: ORDER_HUANG_TYPE[14]['text'],
+    status: ORDER_HUANG_TYPE[120]['key'],
+    name: ORDER_HUANG_TYPE[120]['text'],
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: ORDER_HUANG_TYPE[15]['key'],
-    name: ORDER_HUANG_TYPE[15]['text'],
+    status: ORDER_HUANG_TYPE[130]['key'],
+    name: ORDER_HUANG_TYPE[130]['text'],
     color: 'rgba(205,123,0,1)',
     bgColor: 'rgba(205,123,0,.1)',
   },
   {
-    status: ORDER_HUANG_TYPE[16]['key'],
-    name: ORDER_HUANG_TYPE[16]['text'],
+    status: ORDER_HUANG_TYPE[140]['key'],
+    name: ORDER_HUANG_TYPE[140]['text'],
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: ORDER_HUANG_TYPE[150]['key'],
+    name: ORDER_HUANG_TYPE[150]['text'],
+    color: 'rgba(205,123,0,1)',
+    bgColor: 'rgba(205,123,0,.1)',
+  },
+  {
+    status: ORDER_HUANG_TYPE[160]['key'],
+    name: ORDER_HUANG_TYPE[160]['text'],
     color: 'rgba(82,196,26,1)',
     bgColor: 'rgba(82,196,26,.1)',
   }, // 绿
@@ -215,6 +225,10 @@ const ORDER_SKU_HUANG_TYPE = {
   1081: {
     key: '1081',
     text: '疫情拦截',
+  },
+  1082: {
+    key: '1082',
+    text: '已拒单',
   },
   1090: {
     key: '1090',
@@ -395,6 +409,11 @@ const ORDER_SKU_HUANG_STATUS: IOrderStatus[] = [
   {
     status: ORDER_SKU_HUANG_TYPE[1081]['key'],
     name: ORDER_SKU_HUANG_TYPE[1081]['text'],
+    color: 'rgba(255,24,24,1)',
+  }, // 红
+  {
+    status: ORDER_SKU_HUANG_TYPE[1082]['key'],
+    name: ORDER_SKU_HUANG_TYPE[1082]['text'],
     color: 'rgba(255,24,24,1)',
   }, // 红
   {
