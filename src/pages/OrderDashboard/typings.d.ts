@@ -23,6 +23,15 @@ interface IGraphBox {
   activeKeys?: number[];
 }
 
+interface IAlertCardLevelMap {
+  [key: number]: IAlertCardLevelMapItem;
+}
+
+interface IAlertCardLevelMapItem {
+  key: number;
+  level?: string;
+}
+
 interface IAlertCardMap {
   [key: number]: IAlertCardMapItem;
 }
@@ -66,6 +75,7 @@ declare namespace OD {
     gmv: number;
     earlyWarningCode?: number;
     earlyWarningName?: string;
+    earlyWarningLevel?: number;
     earlyWarningTooltips?: string;
     earlyWarningType?: string;
     percent?: number;

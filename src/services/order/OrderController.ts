@@ -93,6 +93,14 @@ export async function getOrderPrescription(params = {}) {
   );
 }
 
+// 查询 履约订单时效监控 （面板-卡片信息）
+export async function getOrderPrescriptionMock(params = {}) {
+  return request(`/api/v3/orderPrescription`, {
+    method: 'POST',
+    data: { ...params },
+  });
+}
+
 export async function getAlertGraph(url = '', params = {}) {
   return request(`${REACT_BASE_URL}/${APP_PRE}/${url}`, {
     method: 'POST',

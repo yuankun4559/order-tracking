@@ -1,11 +1,12 @@
 interface IntAlertCard extends OD.IOrderPrescriptionItem {
-  activeKey?: number;
-  cardKey?: number;
+  activeKey?: string;
+  cardKey?: string;
   cardTitle?: string;
   cardType?: string;
   cardTitleVal?: number;
   className?: string;
   desc?: string;
+  earlyWarningLevel?: number;
   onChange?: () => void;
 }
 

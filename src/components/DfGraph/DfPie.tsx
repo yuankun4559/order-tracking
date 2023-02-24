@@ -19,6 +19,7 @@ const DfPie = (props: any) => {
       const {
         pOrderType = '',
         pEarlyWarningCode = '',
+        pEarlyWarningLevel = '',
         pActiveKeys = [],
       } = gContext;
       const combinationConditionList = pActiveKeys?.map((key: any) => ({
@@ -29,6 +30,7 @@ const DfPie = (props: any) => {
         combinationConditionList,
         orderType: pOrderType,
         earlyWarningCode: pEarlyWarningCode,
+        earlyWarningLevel: pEarlyWarningLevel,
       };
       const resData = await getAlertGraph(url, params);
       const data = (resData || []).map((item: any) => ({

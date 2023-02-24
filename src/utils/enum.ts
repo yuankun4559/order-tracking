@@ -1,3 +1,7 @@
+const DEFAULT_COLOR: string = 'rgba(255,24,24,1)';
+const DEFAULT_BG_COLOR: string = 'rgba(255,24,24,.1)';
+const DEFAULT_TEXT: string = '未知';
+
 interface IOrderStatus {
   status: string;
   name: string;
@@ -643,4 +647,7 @@ export {
   ORDER_SKU_HUANG_STATUS,
   ORDER_TYPES,
   WAREHOUSE_ENUM,
+  DEFAULT_COLOR,
+  DEFAULT_BG_COLOR,
+  DEFAULT_TEXT,
 };

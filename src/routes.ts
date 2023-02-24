@@ -1,18 +1,16 @@
 export default [
   {
     path: '/',
-    redirect: '/order-search',
+    redirect: '/order-dashboard',
   },
   {
     name: '履约看板',
     path: '/order-dashboard',
     component: './OrderDashboard',
-    // menuRender: false,
   }, // 履约110订单查询
   {
-    name: '履约110',
+    name: '履约明细查询',
     path: '/order-search',
     component: './OrderList',
-    // menuRender: false,
   }, // 履约110订单查询
 ];

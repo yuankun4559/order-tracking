@@ -37,6 +37,8 @@ export default defineConfig({
   define: {
     REACT_BASE_URL,
   },
+  fastRefresh: true,
+  mfsu: {},
   chainWebpack(config) {
     config.module
       .rule('less')

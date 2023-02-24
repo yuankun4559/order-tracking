@@ -6,10 +6,10 @@ import {
   ProTable,
   ProFormInstance,
 } from '@ant-design/pro-components';
-import { Badge, message, Tooltip, Button, Empty } from 'antd';
+import { Badge, message, Tooltip, Button, Empty, Spin } from 'antd';
 import { DoubleRightOutlined, CloudDownloadOutlined } from '@ant-design/icons';
 
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { useModel } from '@umijs/max';
 import moment from 'moment';
 
@@ -21,15 +21,17 @@ import {
   ORDER_SKU_HUANG_TYPE,
   WAREHOUSE_ENUM,
   ORDER_SKU_HUANG_STATUS,
+  DEFAULT_COLOR,
+  DEFAULT_BG_COLOR,
+  DEFAULT_TEXT,
   // SHOP_TYPE_ENUMS,
 } from '@/utils/enum';
 
-const { queryOrderList, exportData /* queryOrderDetailList */ } =
+const { queryOrderList, exportData, getBrandEnums /* queryOrderDetailList */ } =
   servicesOrder.OrderController;
 import {
   requestCarrierEnums,
   requestProvinceEnums,
-  requestBrandEnums,
   requestStoreEnums,
 } from './requestFilter';
 
@@ -53,6 +55,43 @@ const OrderList = (props: IOrderPage) => {
   const [expandedRowKeys, setExpandedRowKeys] = useState<readonly React.Key[]>(
     [],
   );
+  const [isFetching, setIsFetching] = useState(false);
+
+  /**
+   * @description: 品牌模糊查询
+   * @param {any} params
+   */
+  const requestBrandEnumsInner = async (params: any) => {
+    if (
+      params?.keyWords === undefined ||
+      params?.keyWords === '' ||
+      params?.keyWords?.trim() === ''
+    )
+      return;
+    try {
+      setIsFetching(true);
+      const resData = await getBrandEnums({
+        name: params?.keyWords,
+        pageNum: 0,
+        pageSize: 500,
+      });
+      setIsFetching(false);
+      return (resData?.content || []).map((item: any) => ({
+        value: item.id,
+        label: item.name,
+      }));
+    } catch (error) {
+      setIsFetching(true);
+      return [];
+    }
+  };
+
+  // 子状态【去除面板的1170】
+  const ORDER_SKU_HUANG_TYPE_LIST: TypeKeyValue = useMemo(() => {
+    const allKeys: TypeKeyValue = { ...ORDER_SKU_HUANG_TYPE };
+    delete allKeys[1170];
+    return allKeys;
+  }, [ORDER_SKU_HUANG_TYPE]);
 
   const columns: ProColumns<API.OrderRow>[] = [
     {
@@ -82,6 +121,11 @@ const OrderList = (props: IOrderPage) => {
         ],
       },
       valueType: 'text',
+      search: {
+        transform: (value) => ({
+          subOrderNumber: value === '' ? undefined : value,
+        }),
+      },
       width: 120,
     },
     {
@@ -97,6 +141,11 @@ const OrderList = (props: IOrderPage) => {
             message: '多单查询以“,”分隔',
           },
         ],
+      },
+      search: {
+        transform: (value) => ({
+          mainOrderNumber: value === '' ? undefined : value,
+        }),
       },
       valueType: 'text',
       width: 120,
@@ -114,12 +163,16 @@ const OrderList = (props: IOrderPage) => {
           },
         ],
       },
+      search: {
+        transform: (value) => ({
+          phone: value === '' ? undefined : value,
+        }),
+      },
       valueType: 'text',
     },
     {
       title: '订单类型',
       dataIndex: 'orderType',
-      // hideInSearch: true,
       fieldProps: {
         placeholder: '请选择',
         showSearch: true,
@@ -152,7 +205,7 @@ const OrderList = (props: IOrderPage) => {
         showSearch: true,
       },
       valueType: 'select',
-      valueEnum: ORDER_SKU_HUANG_TYPE,
+      valueEnum: ORDER_SKU_HUANG_TYPE_LIST,
       width: 120,
     },
     {
@@ -235,13 +288,14 @@ const OrderList = (props: IOrderPage) => {
       fieldProps: {
         placeholder: '请选择',
         showSearch: true,
+        notFoundContent: isFetching ? <Spin size="small" /> : null,
       },
       valueType: 'select',
       params: {
         pageIndex: 0,
         pageSize: 1000,
       },
-      request: requestBrandEnums,
+      request: requestBrandEnumsInner,
       width: 120,
     },
     {
@@ -253,6 +307,11 @@ const OrderList = (props: IOrderPage) => {
       },
       valueType: 'text',
       width: 120,
+      search: {
+        transform: (value) => ({
+          skuCode: value === '' ? undefined : value,
+        }),
+      },
     },
     {
       title: '下单日期',
@@ -337,25 +396,22 @@ const OrderList = (props: IOrderPage) => {
         const currentStatus = ORDER_HUANG_STATUS?.find(
           (item) => item.status === String(text),
         );
-        const result = !text ? (
-          ''
-        ) : (
+        return (
           <div
             className="my-tag"
             style={{
-              color: currentStatus?.color,
-              borderColor: currentStatus?.bgColor,
-              backgroundColor: currentStatus?.bgColor,
+              color: currentStatus?.color || DEFAULT_COLOR,
+              borderColor: currentStatus?.bgColor || DEFAULT_BG_COLOR,
+              backgroundColor: currentStatus?.bgColor || DEFAULT_BG_COLOR,
             }}
           >
             <Badge
-              color={currentStatus?.color}
-              text={currentStatus?.name}
-              style={{ color: currentStatus?.color }}
+              color={currentStatus?.color || DEFAULT_COLOR}
+              text={currentStatus?.name || DEFAULT_TEXT}
+              style={{ color: currentStatus?.color || DEFAULT_COLOR }}
             />
           </div>
         );
-        return result;
       },
     },
   ];
@@ -407,9 +463,9 @@ const OrderList = (props: IOrderPage) => {
         );
         return (
           <Badge
-            color={currentStatus?.color}
-            text={currentStatus?.name}
-            style={{ color: currentStatus?.color }}
+            color={currentStatus?.color || DEFAULT_COLOR}
+            text={currentStatus?.name || DEFAULT_TEXT}
+            style={{ color: currentStatus?.color || DEFAULT_COLOR }}
           />
         );
       },
@@ -500,8 +556,6 @@ const OrderList = (props: IOrderPage) => {
    * @description: 导出表格数据
    */
   const handleExport = async () => {
-    console.log('<<<<<<');
-
     if (refSearchForm.current) {
       try {
         const values = refSearchForm.current.getFieldsValue();

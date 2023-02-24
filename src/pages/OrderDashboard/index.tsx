@@ -44,6 +44,7 @@ const OrderDashboard = () => {
 
   const [isInstructionModalVisble, setIsInstructionModalVisble] =
     useState(false); // 操作说明弹窗
+  const [isMonitorLoading, setIsMonitorLoading] = useState<boolean>(false);
 
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   const [cardCheckedInfo, setCardCheckedInfo] =
@@ -99,6 +100,7 @@ const OrderDashboard = () => {
         combinationConditionList,
         orderType,
       };
+      setIsMonitorLoading(true);
       const cardData = await getOrderPrescription(params);
       if (JSON.stringify(cardData) !== '{}') {
         if (cardData.hasOwnProperty('1')) {
@@ -110,8 +112,10 @@ const OrderDashboard = () => {
           setAlertData(cardData['2']);
         }
       }
+      setIsMonitorLoading(false);
       console.log('aaaaa', cardData);
     } catch (err: any) {
+      setIsMonitorLoading(false);
       message.error(err?.message || err);
     }
   };
@@ -158,6 +162,8 @@ const OrderDashboard = () => {
    * @param {AlertCardInfo} cInfo
    */
   const handleCardCheck = (cInfo: OD.IOrderPrescriptionItem): void => {
+    console.log('cInfo', cInfo);
+
     setCardCheckedInfo(cInfo);
     setIsDrawerVisible(true);
   };
@@ -234,16 +240,16 @@ const OrderDashboard = () => {
       <ProCard gutter={16} wrap>
         {warningData?.map((item: OD.IOrderPrescriptionItem) => (
           <ProCard
-            key={item.earlyWarningCode}
-            colSpan={{ xs: 24, sm: 24, md: 24, lg: 12, xl: 8 }}
+            key={`${item.earlyWarningCode}@${item.earlyWarningLevel}`}
+            colSpan={{ xs: 24, sm: 24, md: 24, lg: 12, xl: 8, xxl: 6 }}
             style={{ paddingBlockEnd: 12 }}
           >
             <DfAlertCard
               {...item}
-              cardKey={item.earlyWarningCode}
-              activeKey={cardCheckedInfo?.earlyWarningCode}
+              cardKey={`${item.earlyWarningCode}@${item.earlyWarningLevel}`}
+              activeKey={`${item.earlyWarningCode}@${item.earlyWarningLevel}`}
               cardTitle={item.earlyWarningName}
-              cardTitleVal={item.percent}
+              cardTitleVal={item.percent || 0}
               onChange={() => handleCardCheck(item)}
             />
           </ProCard>
@@ -257,15 +263,15 @@ const OrderDashboard = () => {
       <ProCard gutter={16} wrap>
         {alertData?.map((item: OD.IOrderPrescriptionItem) => (
           <ProCard
-            key={item.earlyWarningCode}
-            colSpan={{ xs: 24, sm: 24, md: 24, lg: 12, xl: 8 }}
+            key={`${item.earlyWarningCode}@${item.earlyWarningLevel}`}
+            colSpan={{ xs: 24, sm: 24, md: 24, lg: 12, xl: 8, xxl: 6 }}
             style={{ paddingBlockEnd: 12 }}
           >
             <DfAlertCard
               {...item}
               key={item.earlyWarningCode}
-              cardKey={item.earlyWarningCode}
-              activeKey={cardCheckedInfo?.earlyWarningCode}
+              cardKey={`${item.earlyWarningCode}@${item.earlyWarningLevel}`}
+              activeKey={`${item.earlyWarningCode}@${item.earlyWarningLevel}`}
               cardTitle={item.earlyWarningName}
               cardTitleVal={item.percent}
               onChange={() => handleCardCheck(item)}
@@ -312,27 +318,29 @@ const OrderDashboard = () => {
 
           {/* 右侧-预警统计 */}
           <div className="flex-early-warning flex-flex1">
-            {/* 时效监控 */}
-            <div className="prescription-monitor">
-              <div className="flex-row-between-center m-b-10">
-                <span className="title fs-16">{`端到端实效(下单->收货)监控`}</span>
-                <div
-                  className="extra-instructions pointer flex-row-end-center"
-                  onClick={() => setIsInstructionModalVisble(true)}
-                >
-                  <FileExclamationOutlined />
-                  <span className="text">预警规则说明</span>
+            <Spin spinning={isMonitorLoading} delay={100}>
+              {/* 时效监控 */}
+              <div className="prescription-monitor">
+                <div className="flex-row-between-center m-b-10">
+                  <span className="title fs-16">{`端到端实效(下单->收货)监控`}</span>
+                  <div
+                    className="extra-instructions pointer flex-row-end-center"
+                    onClick={() => setIsInstructionModalVisble(true)}
+                  >
+                    <FileExclamationOutlined />
+                    <span className="text">预警规则说明</span>
+                  </div>
+                </div>
+                <div className="content flex-row-start-start flex-item-stretch">
+                  {renderMonitorWarning}
                 </div>
               </div>
-              <div className="content flex-row-start-start flex-item-stretch">
-                {renderMonitorWarning}
+              {/* 时效预警 */}
+              <div className="prescription-warning">
+                <div className="title m-b-10 fs-16">各节点时效预警</div>
+                {renderMonitorAlert}
               </div>
-            </div>
-            {/* 时效预警 */}
-            <div className="prescription-warning">
-              <div className="title m-b-10 fs-16">各节点时效预警</div>
-              {renderMonitorAlert}
-            </div>
+            </Spin>
           </div>
         </div>
       </div>

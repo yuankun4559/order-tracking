@@ -1,19 +1,36 @@
 .defined-alert-card {
-  padding: 5px 8px 8px;
+  padding: 0.25rem 0.5rem 0.5rem;
   border-radius: 8px;
+
+  &.dac-10 {
+    background: linear-gradient(-45deg, #f00 0%, #ff181872 100%);
+  }
+
+  &.dac-20 {
+    background: linear-gradient(-45deg, #f90 0%, #ffa31872 100%);
+  }
+
+  &.dac-30 {
+    background: linear-gradient(-45deg, #ffe502 0%, #faec6a 100%);
+  }
+
+  &.dac-40 {
+    background: linear-gradient(-45deg, #1890ff 0%, #1890ff72 100%);
+  }
 
   &.is-active {
     box-shadow: 4px 4px 5px 0 rgb(0 0 0 / 20%);
   }
 
   .df-card-header {
+    font-size: 0.8rem;
     line-height: 22px;
     margin-block-end: 7px;
   }
 
   .df-card-body {
-    padding-inline: 8px;
-    padding-block: 2px;
+    padding-inline: 0.38rem;
+    padding-block: 0.36rem;
     border-radius: 4px;
     background-color: rgb(255 255 255 / 50%);
 
@@ -22,19 +39,7 @@
     }
 
     .value {
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
-  }
-
-  &.nomal {
-    background: linear-gradient(-45deg, #1890ff 0%, #1890ff72 100%);
-  }
-
-  &.warning {
-    background: linear-gradient(-45deg, #f90 0%, #ffa31872 100%);
-  }
-
-  &.error {
-    background: linear-gradient(-45deg, #f00 0%, #ff181872 100%);
   }
 }

@@ -1,6 +1,7 @@
 // 运行时配置
-import type { RequestConfig, RuntimeConfig } from '@umijs/max';
+import { RequestConfig, RuntimeConfig, useModel } from '@umijs/max';
 import { message } from 'antd';
+
 // import authorityService from '@/services/authority';
 // const { fetchUserRole } = authorityService.AuthorityController;
 
@@ -16,7 +17,9 @@ export async function getInitialState() {
 }
 
 const handleCollapsed = (collapsed: boolean) => {
-  console.log('handleCollapsed', collapsed);
+  console.log('collapsed', collapsed);
+
+  // setGCollapse(collapsed);
 };
 
 export const layout: RuntimeConfig['layout'] = () => {

@@ -18,6 +18,7 @@ const CardDetailDrawer = (props: IDrawer) => {
     activeKeys = [],
     onClose,
   } = props;
+  console.log('transdata', transData);
 
   const transParams = useMemo(() => {
     const combinationConditionList = activeKeys?.map((key: any) => ({
@@ -27,6 +28,8 @@ const CardDetailDrawer = (props: IDrawer) => {
     return {
       combinationConditionList,
       orderType,
+      earlyWarningCode: transData?.earlyWarningCode,
+      earlyWarningLevel: transData?.earlyWarningLevel,
     };
   }, [activeKeys, orderType]);
 
@@ -46,6 +49,7 @@ const CardDetailDrawer = (props: IDrawer) => {
             pOrderType: orderType,
             pActiveKeys: activeKeys,
             pEarlyWarningCode: transData?.earlyWarningCode,
+            pEarlyWarningLevel: transData?.earlyWarningLevel,
           }}
         >
           <GraphBox
