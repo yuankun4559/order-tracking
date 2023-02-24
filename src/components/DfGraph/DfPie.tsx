@@ -33,7 +33,7 @@ const DfPie = (props: any) => {
         earlyWarningLevel: pEarlyWarningLevel,
       };
       const resData = await getAlertGraph(url, params);
-      const data = (resData || []).map((item: any) => ({
+      let data = (resData || []).map((item: any) => ({
         ...item,
         value: Number(item.value),
       }));

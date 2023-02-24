@@ -305,7 +305,7 @@ const OrderDashboard = () => {
           <div className="flex-distribution flex-col-start-start align-items-stretch">
             <Spin spinning={isDistributionLoading} delay={100}>
               {renderBoxHeader}
-              <div className="content flex-row-start-start">
+              <div className="content flex-row-between-start">
                 {/* R1 */}
                 {renderBoxLeft}
                 {/* R5、R5 */}

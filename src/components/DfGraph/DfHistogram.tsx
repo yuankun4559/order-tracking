@@ -32,7 +32,7 @@ const DfHistogram = (props: any) => {
         earlyWarningLevel: pEarlyWarningLevel,
       };
       const resData = await getAlertGraph(url, params);
-      const data = (resData || []).map((item: any) => ({
+      let data = (resData || []).map((item: any) => ({
         ...item,
         value: Number(item.value),
       }));
@@ -46,12 +46,16 @@ const DfHistogram = (props: any) => {
         });
         setGchart(chart);
       }
-
       chart.source(data);
       chart.axis('title', {
         label: {
           textStyle: {
             fill: '#aaaaaa',
+          },
+          fontSize: 8,
+          autoRotate: true,
+          formatter: (val: any) => {
+            return val?.length > 8 ? val.substring(1, 8) : val;
           },
         },
         tickLine: {
@@ -59,13 +63,14 @@ const DfHistogram = (props: any) => {
           length: 0,
         },
       });
+
       chart.axis('value', {
-        title: false,
         label: {
           textStyle: {
             fill: '#aaaaaa',
           },
         },
+        fontSize: 8,
       });
       chart.tooltip({
         showTitle: false,
