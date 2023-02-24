@@ -169,8 +169,6 @@ const OrderDashboard = () => {
   };
 
   const handleDrawerClose = () => {
-    console.log('aaaaa open');
-
     setIsDrawerVisible(false);
     setCardCheckedInfo(undefined);
   };
