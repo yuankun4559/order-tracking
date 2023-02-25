@@ -335,7 +335,7 @@ const OrderList = (props: IOrderPage) => {
       width: 100,
     },
     {
-      title: '店铺名',
+      title: '门店名',
       dataIndex: 'storeName',
       hideInSearch: true,
       valueType: 'text',
