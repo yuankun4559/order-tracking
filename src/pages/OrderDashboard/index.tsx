@@ -101,15 +101,20 @@ const OrderDashboard = () => {
         orderType,
       };
       setIsMonitorLoading(true);
+
       const cardData = await getOrderPrescription(params);
       if (JSON.stringify(cardData) !== '{}') {
         if (cardData.hasOwnProperty('1')) {
           // 端到端时效
           setWarningData(cardData['1']);
+        } else {
+          setWarningData([]);
         }
         if (cardData.hasOwnProperty('2')) {
           // 节点时效
           setAlertData(cardData['2']);
+        } else {
+          setAlertData([]);
         }
       }
       setIsMonitorLoading(false);

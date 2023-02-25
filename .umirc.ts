@@ -20,7 +20,7 @@ export default defineConfig({
   request: {},
   routes,
   layout: {
-    title: '订单履约',
+    title: '',
     siderWidth: 180,
     defaultCollapsed: true,
   },
