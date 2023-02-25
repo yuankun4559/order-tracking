@@ -59,7 +59,7 @@ const DfHistogram = (props: any) => {
           },
         },
         tickLine: {
-          alignWithLabel: false,
+          alignWithLabel: true,
           length: 0,
         },
       });

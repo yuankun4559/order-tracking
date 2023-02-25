@@ -252,7 +252,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
   {
     key: 'HISTOGRAM_SUSPEND_DRATION',
     type: GRAPH_TYPE['HISTOGRAM'],
-    title: '各挂起时长单量(Top30)',
+    title: '各挂起时长单量(Top20)',
     dimension: GRAPH_DIMENSION['SUSPEND_DRATION'],
     unit: '',
     url: 'fulfillment-order/hang-time-distribution', //接口请求地址
@@ -260,7 +260,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
   {
     key: 'HISTOGRAM_BD_RPM_NAME',
     type: GRAPH_TYPE['HISTOGRAM'],
-    title: '各BD/RPM单量(Top30)',
+    title: '各BD/RPM单量(Top20)',
     dimension: GRAPH_DIMENSION['BD_RPM_NAME'],
     unit: '',
     url: 'fulfillment-order/salesman-distribution', //接口请求地址
@@ -268,7 +268,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
   {
     key: 'HISTOGRAM_BRAND_NAME',
     type: GRAPH_TYPE['HISTOGRAM'],
-    title: '各品牌单量(Top30)',
+    title: '各品牌单量(Top20)',
     dimension: GRAPH_DIMENSION['BRAND_NAME'],
     unit: '',
     url: 'fulfillment-order/brand-distribution', //接口请求地址
@@ -284,7 +284,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
   {
     key: 'HISTOGRAM_CARRIER',
     type: GRAPH_TYPE['HISTOGRAM'],
-    title: '各承运商单量(Top30)',
+    title: '各承运商单量(Top20)',
     dimension: GRAPH_DIMENSION['CARRIER'],
     unit: '',
     url: 'fulfillment-order/carrier-distribution', //接口请求地址
@@ -292,7 +292,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
   {
     key: 'HISTOGRAM_STORE_NAME',
     type: GRAPH_TYPE['HISTOGRAM'],
-    title: '各店铺单量(Top30)',
+    title: '各店铺单量(Top20)',
     dimension: GRAPH_DIMENSION['STORE_NAME'],
     unit: '',
     url: 'fulfillment-order/shop-distribution', //接口请求地址

@@ -30,22 +30,19 @@ const DfAlertCard = (props: IntAlertCard) => {
   // }, [earlyWarningLevel]);
 
   const renderCardHeader = (
-    <div className="df-card-header flex-row-center-center">
+    <div className="w-100 df-card-header flex-row-center-center">
       {earlyWarningCode === 100 && (
         <ClockCircleOutlined className="fs-14 m-r-5" />
       )}
       {earlyWarningCode === 110 && <WarningOutlined className="fs-14 m-r-5" />}
       {earlyWarningCode === 120 && <StopOutlined className="fs-14 m-r-5" />}
-      <span>
-        {/* {earlyWarningCode > 120 && <>【{renderCardLevelText}】</>} */}
-        <>{cardTitle}</>
-      </span>
+      <span>{cardTitle}</span>
       {earlyWarningCode <= 120 && <span>({`${cardTitleVal}%`})</span>}
     </div>
   );
 
   const renderCardBody = (
-    <div className="df-card-body">
+    <div className="w-100 df-card-body">
       <Row>
         <Col span={12}>
           <div className="flex-row-start-center">
@@ -72,7 +69,7 @@ const DfAlertCard = (props: IntAlertCard) => {
   return (
     <Tooltip title={earlyWarningTooltips}>
       <div
-        className={`defined-alert-card pointer ${className} dac-${earlyWarningLevel} ${
+        className={`h-100 flex-col-between-start defined-alert-card pointer ${className} dac-${earlyWarningLevel} ${
           activeKey === cardKey ? 'is-active' : ''
         }`}
         key={cardKey}

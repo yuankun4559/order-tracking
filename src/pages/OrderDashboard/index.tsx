@@ -162,8 +162,6 @@ const OrderDashboard = () => {
    * @param {AlertCardInfo} cInfo
    */
   const handleCardCheck = (cInfo: OD.IOrderPrescriptionItem): void => {
-    console.log('cInfo', cInfo);
-
     setCardCheckedInfo(cInfo);
     setIsDrawerVisible(true);
   };
@@ -235,12 +233,13 @@ const OrderDashboard = () => {
 
   const renderMonitorWarning = useMemo(() => {
     return (
-      <ProCard gutter={16} wrap>
+      <ProCard gutter={16} wrap className="h-100">
         {warningData?.map((item: OD.IOrderPrescriptionItem) => (
           <ProCard
             key={`${item.earlyWarningCode}@${item.earlyWarningLevel}`}
             colSpan={{ xs: 24, sm: 24, md: 24, lg: 12, xl: 8, xxl: 6 }}
             style={{ paddingBlockEnd: 12 }}
+            className="h-100"
           >
             <DfAlertCard
               {...item}
@@ -258,12 +257,13 @@ const OrderDashboard = () => {
 
   const renderMonitorAlert = useMemo(() => {
     return (
-      <ProCard gutter={16} wrap>
+      <ProCard gutter={16} wrap className="h-100">
         {alertData?.map((item: OD.IOrderPrescriptionItem) => (
           <ProCard
             key={`${item.earlyWarningCode}@${item.earlyWarningLevel}`}
             colSpan={{ xs: 24, sm: 24, md: 24, lg: 12, xl: 8, xxl: 6 }}
             style={{ paddingBlockEnd: 12 }}
+            className="h-100"
           >
             <DfAlertCard
               {...item}

@@ -26,6 +26,16 @@
     font-size: 0.8rem;
     line-height: 22px;
     margin-block-end: 7px;
+
+    & > span {
+      max-height: 44px;
+      // word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 2;
+      display: box;
+      -webkit-box-orient: vertical;
+    }
   }
 
   .df-card-body {

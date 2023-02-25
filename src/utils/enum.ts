@@ -45,7 +45,7 @@ const ORDER_HUANG_TYPE = {
     text: '延期发货',
   },
   70: {
-    key: '7',
+    key: '70',
     text: '出库拦截',
   },
   80: {

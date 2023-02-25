@@ -519,10 +519,16 @@ const OrderList = (props: IOrderPage) => {
    * @param {*} void
    */
   const handleToggleCollose = (): void => {
+    if (tableData?.length === 0) {
+      message.warning('暂无要展开内容！');
+      return;
+    }
+
     // @ts-ignore
     const currentExpandRows: readonly React.Key[] = !isColloseAll
       ? tableData?.map((item) => item.subOrderNumber)
       : [];
+
     // if (!isColloseAll) {
     //   // 展开全部
     //   const rowsExpandNew: readonly React.Key[] = currentExpandRows.filter(
