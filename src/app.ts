@@ -1,5 +1,5 @@
 // 运行时配置
-import { RequestConfig, RuntimeConfig, useModel } from '@umijs/max';
+import { RequestConfig, RuntimeConfig } from '@umijs/max';
 import { message } from 'antd';
 
 // import authorityService from '@/services/authority';
@@ -27,7 +27,7 @@ export const layout: RuntimeConfig['layout'] = () => {
     logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
     siderWidth: 180,
     breakpoint: false,
-    defaultCollapsed: true,
+    defaultCollapsed: false,
     onCollapse: handleCollapsed,
     menu: {
       locale: false,

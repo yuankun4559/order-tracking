@@ -62,7 +62,7 @@ const ALERT_CARD_ENUMS: IAlertCardMap = {
   180: {
     key: 180,
     name: 'R1总仓超时未出库',
-    charts: ['PIE_AGREEMENT_WAREHOUSE', 'HISTOGRAM_CARRIER'],
+    charts: ['PIE_AGREEMENT_WAREHOUSE'],
   },
   190: {
     key: 190,
@@ -215,7 +215,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各订单类型单量',
     dimension: GRAPH_DIMENSION['ORDER_TYPE'],
     unit: '',
-    url: 'fulfillment-order/order-type-distribution', //接口请求地址
+    url: 'fulfillment-order/order-type-distribution',
   },
   {
     key: 'PIE_AGREEMENT_WAREHOUSE',
@@ -223,7 +223,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各履约仓单量',
     dimension: GRAPH_DIMENSION['AGREEMENT_WAREHOUSE'],
     unit: '',
-    url: 'fulfillment-order/warehouse-distribution', //接口请求地址
+    url: 'fulfillment-order/warehouse-distribution',
   },
   {
     key: 'PIE_STORE_TYPE',
@@ -231,7 +231,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各类型店铺单量',
     dimension: GRAPH_DIMENSION['STORE_TYPE'],
     unit: '',
-    url: 'fulfillment-order/shop-type-distribution', //接口请求地址
+    url: 'fulfillment-order/shop-type-distribution',
   },
   {
     key: 'PIE_COMPARTMENT',
@@ -239,7 +239,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各分仓单量',
     dimension: GRAPH_DIMENSION['COMPARTMENT'],
     unit: '',
-    url: 'fulfillment-order/sub-warehouse-distribution', //接口请求地址
+    url: 'fulfillment-order/sub-warehouse-distribution',
   },
   {
     key: 'PIE_DELIVERY',
@@ -247,7 +247,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各配送方式单量',
     dimension: GRAPH_DIMENSION['DELIVERY'],
     unit: '',
-    url: 'fulfillment-order/delivery-method-distribution', //接口请求地址
+    url: 'fulfillment-order/delivery-method-distribution',
   },
   {
     key: 'HISTOGRAM_SUSPEND_DRATION',
@@ -255,7 +255,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各挂起时长单量(Top20)',
     dimension: GRAPH_DIMENSION['SUSPEND_DRATION'],
     unit: '',
-    url: 'fulfillment-order/hang-time-distribution', //接口请求地址
+    url: 'fulfillment-order/hang-time-distribution',
   },
   {
     key: 'HISTOGRAM_BD_RPM_NAME',
@@ -263,7 +263,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各BD/RPM单量(Top20)',
     dimension: GRAPH_DIMENSION['BD_RPM_NAME'],
     unit: '',
-    url: 'fulfillment-order/salesman-distribution', //接口请求地址
+    url: 'fulfillment-order/salesman-distribution',
   },
   {
     key: 'HISTOGRAM_BRAND_NAME',
@@ -271,7 +271,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各品牌单量(Top20)',
     dimension: GRAPH_DIMENSION['BRAND_NAME'],
     unit: '',
-    url: 'fulfillment-order/brand-distribution', //接口请求地址
+    url: 'fulfillment-order/brand-distribution',
   },
   {
     key: 'HISTOGRAM_PROVINCE',
@@ -279,7 +279,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各省单量',
     dimension: GRAPH_DIMENSION['PROVINCE'],
     unit: '',
-    url: 'fulfillment-order/province-distribution', //接口请求地址
+    url: 'fulfillment-order/province-distribution',
   },
   {
     key: 'HISTOGRAM_CARRIER',
@@ -287,7 +287,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各承运商单量(Top20)',
     dimension: GRAPH_DIMENSION['CARRIER'],
     unit: '',
-    url: 'fulfillment-order/carrier-distribution', //接口请求地址
+    url: 'fulfillment-order/carrier-distribution',
   },
   {
     key: 'HISTOGRAM_STORE_NAME',
@@ -295,7 +295,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各店铺单量(Top20)',
     dimension: GRAPH_DIMENSION['STORE_NAME'],
     unit: '',
-    url: 'fulfillment-order/shop-distribution', //接口请求地址
+    url: 'fulfillment-order/shop-distribution',
   }, // R4 / R5
   {
     key: 'HISTOGRAM_SQE_CHARGE',
@@ -303,7 +303,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '供管部负责人单量(P2)',
     dimension: GRAPH_DIMENSION['SQE_CHARGE'],
     unit: '',
-    url: 'api/v3/graphdata', //接口请求地址
+    url: 'api/v3/graphdata', // 暂无接口
   },
   {
     key: 'HISTOGRAM_COMPARTMENT',
@@ -311,7 +311,7 @@ const GRAPH_ENUMS: IGraphItem[] = [
     title: '各分仓单量',
     dimension: GRAPH_DIMENSION['COMPARTMENT'],
     unit: '',
-    url: 'fulfillment-order/sub-warehouse-distribution', //接口请求地址
+    url: 'fulfillment-order/sub-warehouse-distribution',
   },
 ];
 
