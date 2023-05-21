@@ -12,7 +12,7 @@
     "setup": "max setup",
     "start:dev": "cross-env UMI_ENV=dev max dev",
     "start:prod": "cross-env UMI_ENV=prod max dev",
-    "start:test": "cross-env UMI_ENV=test max dev",
+    "start:test": "cross-env UMI_ENV=test PORT=8001 HOST=210.22.70.225 max dev",
     "start:uat": "cross-env UMI_ENV=uat max dev"
   },
   "dependencies": {
