@@ -39,7 +39,7 @@ export default defineConfig({
   },
   fastRefresh: true,
   mfsu: {},
-  chainWebpack(config) {
+  chainWebpack(config: any) {
     config.module
       .rule('less')
       .test(/\.less$/)
