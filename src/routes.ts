@@ -1,8 +1,13 @@
 export default [
   {
     path: '/',
-    redirect: '/order-dashboard',
+    redirect: '/home',
   },
+  {
+    name: 'home',
+    path: '/home',
+    component: './HomePage',
+  }, // 履约110订单查询
   {
     name: '履约看板',
     path: '/order-dashboard',

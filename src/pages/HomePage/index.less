@@ -1,0 +1,111 @@
+.dashboard-page-container {
+  .ant-page-header {
+    background-color: white;
+  }
+
+  .ant-pro-grid-content {
+    .ant-pro-grid-content-children {
+      .ant-pro-page-container-children-content {
+        padding: 0;
+
+        .order-dashboard {
+          align-items: inherit;
+          height: calc(100vh - 64px);
+          padding: 20px;
+
+          .order-filter {
+            padding: 0 24px 20px;
+            background-color: white;
+          }
+
+          .order-container {
+            width: 100%;
+            min-width: 1000px;
+            padding: 1rem;
+            align-items: inherit;
+            overflow-y: auto;
+
+            .flex-distribution,
+            .flex-early-warning {
+              padding: 1rem;
+              background-color: white;
+              min-height: 400px;
+              overflow-y: auto;
+            }
+
+            .flex-distribution {
+              flex-basis: 31.75rem;
+              margin-right: 1rem;
+              // min-width: 500px;
+              overflow-x: auto;
+
+              .deselect-btn {
+                color: @primary;
+              }
+
+              .content {
+                padding-block-end: 15px;
+                margin-top: 20px;
+                overflow-y: auto;
+              }
+
+              .box-left {
+                // margin-right: 15%;
+                margin-right: 2rem;
+                max-width: 38%;
+              }
+
+              .box-right {
+                max-width: 37.5%;
+              }
+            }
+
+            .flex-early-warning {
+              .prescription-monitor,
+              .prescription-warning {
+                margin-bottom: 24px;
+
+                .content {
+                  & > .ant-pro-card {
+                    .ant-pro-card-body {
+                      padding: 0;
+
+                      .ant-pro-card-col {
+                        padding: 0;
+                      }
+                    }
+                  }
+                }
+              }
+
+              .prescription-warning {
+                & > .ant-pro-card {
+                  .ant-pro-card-body {
+                    padding: 0;
+
+                    .ant-pro-card-col {
+                      padding: 0;
+                    }
+                  }
+                }
+              }
+
+              .extra-instructions {
+                color: @primary;
+
+                & > span.text {
+                  margin-left: 5px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .info-desc {
+    color: #000;
+    cursor: default;
+  }
+}
